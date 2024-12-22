@@ -1,22 +1,22 @@
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate,useParams } from "react-router-dom";
 function Home() {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
+    const navigate = useNavigate();
+    //const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const {id} = useParams();
+    console.log(id);
+    const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    navigate("/login"); // מעבר לעמוד הכניסה לאחר יציאה
+    navigate("/login"); 
   };
 
   return (
     <div>
-      <h1>ברוך הבא, {currentUser?.name}</h1>
+      {/* <h1>ברוך הבא, {currentUser?.name}</h1> */}
       <div>
-        <button onClick={() => navigate("/info")}>Info</button>
-        <button onClick={() => navigate("/todos")}>Todos</button>
-        <button onClick={() => navigate("/posts")}>Posts</button>
-        <button onClick={() => navigate("/albums")}>Albums</button>
+        <Link to={"/todos"}>Todos</Link>
+        <Link to={"/posts"}>Posts</Link>
+        <Link to={"/albums"}>Albums</Link>
+        <Link to={"/info"}>Info</Link>   
         <button onClick={handleLogout}>Logout</button>
       </div>
     </div>

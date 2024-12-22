@@ -7,20 +7,13 @@ export default function CompleteProfile() {
   const navigate = useNavigate();
   const location = useLocation();
   const newUser = location.state?.newUser;
-
   const handleCompleteProfile = async () => {
     if (!newUser) {
       alert("אין משתמש מחובר");
       return;
     }
-
-    // עדכון המשתמש בפרטים החדשים
     const updatedUser = { ...newUser, fullName, address };
-
-    // שמירה ב-LocalStorage
     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-
-    // שליחה לשרת המקומי להוסיף את הפרטים החדשים
     try {
       const response = await fetch("http://localhost:3000/users", {
         method: "POST",
@@ -42,20 +35,39 @@ export default function CompleteProfile() {
 
   return (
     <div>
-      <h1>השלם את פרטי המשתמש</h1>
+      {/* <h1>השלם את פרטי המשתמש</h1>
       <input
         type="text"
-        placeholder="שם מלא"
-        value={fullName}
-        onChange={(e) => setFullName(e.target.value)}
+        placeholder="name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+          <input
+        type="text"
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="text"
-        placeholder="כתובת"
+        placeholder="address"
         value={address}
         onChange={(e) => setAddress(e.target.value)}
       />
-      <button onClick={handleCompleteProfile}>שמור והשלם</button>
+          <input
+        type="number"
+        placeholder="phone"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+      />
+          <input
+        type="text"
+        placeholder="company"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+      />
+
+      <button onClick={handleCompleteProfile}>שמור והשלם</button> */}
     </div>
   );
 }

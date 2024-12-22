@@ -3,6 +3,9 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import CompleteProfile from "./pages/CompleteProfile";
+import Posts from "./pages/posts";
+import Todos from "./pages/todos";
+import Albums from "./pages/albums";
 
 function App() {
   const currentUser = localStorage.getItem("currentUser");
@@ -13,7 +16,11 @@ function App() {
         <Route path="/" element={<Navigate to={currentUser ? "/home" : "/login"} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route path="/home/:id/*" element={<Home />} >
+          <Route path="todos" element={<Todos />}></Route>
+          <Route path="posts" element={<Posts />}></Route>
+          <Route path="albums" element={<Albums />}></Route>
+        </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />
       </Routes>
     </Router>

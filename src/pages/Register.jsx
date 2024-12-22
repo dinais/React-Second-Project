@@ -1,42 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
-  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-
-  // הבאת רשימת משתמשים משרת בעת טעינת הקומפוננטה
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/users");
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
   const handleRegister = async () => {
     if (password !== passwordVerify) {
       alert("הסיסמאות לא תואמות");
       return;
     }
-
-    const userExists = users.some((u) => u.username === username);
-    if (userExists) {
+    const response = await fetch(`http://localhost:3000/users/?username=${username}`);
+    const user = await response.json();    
+    if (user.length > 0 ) {
       alert("שם המשתמש כבר קיים");
     } else {
-      // יצירת משתמש חדש
       const newUser = { username, password };
-
-      // נווט לעמוד להשלמת פרטי המשתמש
       navigate("/complete-profile", { state: { newUser } });
     }
   };
