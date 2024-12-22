@@ -42,7 +42,7 @@ export default function Todos() {
       ) : (
         <ul>
           {userTodos.map((todo) => (
-            <li style={{ listStyleType: "none", padding: 0, margin: 0 }} key={todo.id}>{todo.id} {/* שימוש ב-key */}
+            <li style={{ listStyleType: "none", padding: 0, margin: 0 }} key={todo.id}>{todo.id}
               <input
                 type="checkbox"
                 id={`todo-${todo.id}`}
@@ -50,7 +50,7 @@ export default function Todos() {
                 checked={todo.isChecked}
                 onChange={() => handleCheckboxChange(todo.id)}
               />
-              <label htmlFor={`todo-${todo.id}`}> {todo.title}</label>
+              <label htmlFor={`todo-${todo.id}`}>{todo.title}</label>
             </li>
           ))}
         </ul>
