@@ -6,7 +6,6 @@ import CompleteProfile from "./pages/CompleteProfile";
 import Posts from "./pages/posts";
 import Todos from "./pages/todos";
 import Albums from "./pages/albums";
-
 function App() {
   const currentUser = localStorage.getItem("currentUser");
 

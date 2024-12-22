@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+ul {
+  list-style-type: none; /* מבטל נקודות */
+  padding: 0; /* מבטל ריווח פנימי */
+  margin: 0; /* מבטל ריווח חיצוני */
+}
