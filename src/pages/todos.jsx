@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function Todos() {
-  const { id } = useParams(); 
+  const { id } = useParams();   
   const [userTodos, setUserTodos] = useState([]); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/todos/?userId=${id}`);
+        const response = await fetch(`http://localhost:3000/todos?userId=${id}`);
         const data = await response.json();
         const todosWithCheckState = data.map((todo) => ({
           ...todo,
@@ -42,7 +42,7 @@ export default function Todos() {
       ) : (
         <ul>
           {userTodos.map((todo) => (
-            <li key={todo.id}> {/* שימוש ב-key */}
+            <li style={{ listStyleType: "none", padding: 0, margin: 0 }} key={todo.id}>{todo.id} {/* שימוש ב-key */}
               <input
                 type="checkbox"
                 id={`todo-${todo.id}`}
