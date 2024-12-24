@@ -104,6 +104,7 @@ export default function Todos() {
       {loading ? (
         <p>Loading...</p>
       ) : (
+        (userTodos.length>0)?
         <div>
           <button onClick={handleClickAddButton}>Add todo</button>
           <label htmlFor="sort-select">מיין לפי:</label>
@@ -159,6 +160,9 @@ export default function Todos() {
               )}
             </div>
           ))}
+        </div>:<div>
+        <button onClick={handleClickAddButton}>Add todo</button>
+        <div>No todos yet! make some...</div>
         </div>
       )}
     </div>
