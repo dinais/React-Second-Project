@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import './CompleteProfile.css';
+
 
 export default function CompleteProfile() {
   const navigate = useNavigate();
