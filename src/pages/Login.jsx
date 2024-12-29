@@ -15,7 +15,7 @@ export default function Login() {
             alert("User does not exist in the system");
         } else if (user) {
             if (user.website === password) {
-                localStorage.setItem("currentUser", JSON.stringify(user));
+                localStorage.setItem("currentUser", JSON.stringify(user.id));
                 navigate(`/home/${user.id}`);
             } else {
                 alert("One or more of the details are incorrect");

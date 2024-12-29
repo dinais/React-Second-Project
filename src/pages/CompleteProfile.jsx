@@ -54,10 +54,6 @@ export default function CompleteProfile() {
       },
     };
 
-    console.log("Updated User:", JSON.stringify(updatedUser, null, 2));
-
-    localStorage.setItem("currentUser", JSON.stringify(updatedUser,null,2));
-
     try {
       const response = await fetch("http://localhost:3000/users", {
         method: "POST",
@@ -67,6 +63,7 @@ export default function CompleteProfile() {
       const addedUser = await response.json();
       console.log('User ID:', addedUser.id);
       if (response.ok) {
+        localStorage.setItem("currentUser", JSON.stringify(addedUser.id));
         alert("הפרופיל עודכן בהצלחה");
         navigate(`/home/${addedUser.id}`);} else {
         alert("שגיאה בעדכון פרטי המשתמש");

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaTrash, FaEdit } from 'react-icons/fa';
-import "./todos.css";
+import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
 
 export default function Todos() {
   const { id } = useParams();
   const [userTodos, setUserTodos] = useState([]);
+  const [isAddTodoOpen, setIsAddTodoOpen] = useState(false);
+  const [newTodo, setNewTodo] = useState({ userId: id, title: "",completed:false });
   const [loading, setLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState(null);
-
+  const [criterion, setCriterion] = useState('id');
   useEffect(() => {
     const fetchTodos = async () => {
       try {
@@ -78,11 +79,12 @@ export default function Todos() {
   };
 
   const handleChangeSort = (event) => {
-    sortItems(event.target.value);
+    setCriterion(event.target.value)
+    const sortedTodos = sortItems(event.target.value, [...userTodos]);
+    setUserTodos(sortedTodos);
   };
-
-  const sortItems = (criterion) => {
-    let sortedItems = [...userTodos];
+  const sortItems = (criterion, items) => {
+    const sortedItems = [...items];
     switch (criterion) {
       case 'id':
         sortedItems.sort((a, b) => a.id - b.id);
@@ -99,79 +101,119 @@ export default function Todos() {
       default:
         break;
     }
-    setUserTodos(sortedItems);
+    return sortedItems;
   };
-
-  const handleClickAddButton = () => {
-    // Add todo logic
+  const addTodoToServer = async () => {
+    const response = await fetch("http://localhost:3000/todos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTodo),
+    });
+    const addedTodo = await response.json();
+    console.log(addedTodo);
+    if (response.ok) {
+      setUserTodos((prevTodos) => {
+        const updatedTodos = [...prevTodos, addedTodo];
+        return sortItems(criterion, updatedTodos);
+      })
+      setIsAddTodoOpen(false)
+      setNewTodo({ userId: id, title: "" });
+    }
   }
-
+  const addTodo = () => {
+    if (newTodo.title != "") {
+      addTodoToServer();
+    }
+  }
+  const handleAddTodoInput = (e) => {
+    const { value } = e.target;
+    setNewTodo((prevState) => ({
+      ...prevState,
+      title: value
+    }));
+  };
+  const addTodoClicked = () => {
+    setIsAddTodoOpen(true)
+  }
   return (
     <div>
       <h1>Todos</h1>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        (userTodos.length > 0) ?
+        userTodos.length > 0 ? (
           <div>
-            <button onClick={handleClickAddButton} className="add-todo">Add todo</button>
-            <label htmlFor="sort-select">מיין לפי:</label>
+            <button onClick={addTodoClicked}>Add todo</button>
+            <label htmlFor="sort-select">Sort by:</label>
             <select id="sort-select" onChange={handleChangeSort}>
-              <option value="id">מספר מזהה</option>
-              <option value="alphabetical">אלפביתי</option>
-              <option value="performance">ביצוע</option>
-              <option value="random">אקראי</option>
+              <option value="id">ID</option>
+              <option value="alphabetical">Alphabetical</option>
+              <option value="performance">Completion</option>
+              <option value="random">Random</option>
             </select>
+            {isAddTodoOpen && (
+              <div>
+                <FaTimes
+                  onClick={() => setIsAddTodoOpen(false)}
+                />
+                <input name="title" onChange={handleAddTodoInput} type="text" value={newTodo.title} placeholder="Add title..." />
+                <button onClick={addTodo}>Save todo</button>
+              </div>
+            )}
             {userTodos.map((todo) => (
-              <div className="todo-container" key={todo.id}>
-                {todo.id}
-                <div className="todo-header">
-                  <input
-                    type="checkbox"
-                    id={`todo-${todo.id}`}
-                    value={todo.title}
-                    checked={todo.completed}
-                    onChange={() => handleCheckboxChange(todo.id)}
-                  />
-                  {editingTodo && editingTodo.id === todo.id ? (
-                    <div className="todo-edit">
-                      <input className="editingTodo"
-                        type="text"
-                        defaultValue={todo.title}
-                        id={`edit-${todo.id}`}
-                      />
-                      <button
-                        onClick={() => handleSaveEdit(todo.id, document.getElementById(`edit-${todo.id}`).value)}
-                      >
-                        Save
-                      </button>
-                    </div>
-                  ) : (
-
-                    <div className="todo-title">
-                      {todo.title}
-                    </div>
-                  )}
-                  <div className="todo-actions">
+              <div key={todo.id}>
+                {editingTodo && editingTodo.id === todo.id ? (
+                  <div>
+                    {todo.id}
+                    <input
+                      type="checkbox"
+                      id={`todo-${todo.id}`}
+                      value={todo.title}
+                      checked={todo.completed}
+                      onChange={() => handleCheckboxChange(todo.id)}
+                    />
+                    <input
+                      type="text"
+                      defaultValue={todo.title}
+                      id={`edit-${todo.id}`}
+                    />
+                    <button
+                      onClick={() => handleSaveEdit(todo.id, document.getElementById(`edit-${todo.id}`).value)}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    {todo.id}
+                    <input
+                      type="checkbox"
+                      id={`todo-${todo.id}`}
+                      value={todo.title}
+                      checked={todo.completed}
+                      onChange={() => handleCheckboxChange(todo.id)}
+                    />
+                    {todo.title}
                     <FaTrash
-                      style={{ cursor: 'pointer' }}
+                      style={{ marginLeft: '10px', cursor: 'pointer' }}
                       onClick={() => handleTrashClick(todo.id)}
                     />
                     <FaEdit
-                      style={{ cursor: 'pointer' }}
+                      style={{ marginLeft: '10px', cursor: 'pointer' }}
                       onClick={() => handleEditClick(todo)}
                     />
                   </div>
-                </div>
+                )}
               </div>
             ))}
-          </div> :
-          <div>
-            <button onClick={handleClickAddButton}>Add todo</button>
-            <div>No todos yet! Make some...</div>
           </div>
+        ) : (
+          <div>
+            <button onClick={() => setIsAddTodoOpen(true)}>Add todo</button>
+            <div>No todos yet! Create some...</div>
+          </div>
+        )
       )}
     </div>
   );
 }
-// }

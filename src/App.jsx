@@ -7,12 +7,12 @@ import Posts from "./pages/posts";
 import Todos from "./pages/todos";
 import Albums from "./pages/albums";
 function App() {
-  const currentUser = localStorage.getItem("currentUser");
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to={currentUser ? "/home" : "/login"} />} />
+        <Route path="/" element={<Navigate to={currentUser ? `/home/${currentUser}` : "/login"} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home/:id/*" element={<Home />} >

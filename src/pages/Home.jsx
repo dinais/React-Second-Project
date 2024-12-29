@@ -1,8 +1,8 @@
-import { Link, useNavigate, useParams, Outlet } from "react-router-dom";
+import { Link, useNavigate, Outlet } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
-  //const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const { id } = useParams();
+  const id = JSON.parse(localStorage.getItem("currentUser"));
+  //const { id } = useParams();
   console.log(id);
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
