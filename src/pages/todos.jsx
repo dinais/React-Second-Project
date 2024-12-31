@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
-
+import './todos.css'
 export default function Todos() {
   const { id } = useParams();
   const [userTodos, setUserTodos] = useState([]);
@@ -161,7 +161,7 @@ export default function Todos() {
               </div>
             )}
             {userTodos.map((todo) => (
-              <div key={todo.id}>
+              <div key={todo.id} className="todo-item">
                 {editingTodo && editingTodo.id === todo.id ? (
                   <div>
                     {todo.id}
