@@ -11,12 +11,14 @@ export default function Posts() {
     const titleRef = useRef();
     const bodyRef = useRef();
     const navigate = useNavigate();
-    const [userposts, setUserposts] = useState([]);
-    const [isAddpostOpen, setIsAddpostOpen] = useState(false);
-    const [isSearchpostOpen, setIsSearchpostOpen] = useState(false);
+    const [userPosts, setUserPosts] = useState([]);
+    const [searchType, setSearchType] = useState("id");
+    const [isAddPostOpen, setIsAddPostOpen] = useState(false);
+    const [isSearchPostOpen, setIsSearchPostOpen] = useState(false);
+    const [isSearchPost, setIsSearchPost] = useState(false);
     const [newPost, setNewPost] = useState({ userId: id, title: "", body: "" });
     const [loading, setLoading] = useState(true);
-    const [editingpost, setEditingpost] = useState(null);
+    const [editingPost, setEditingPost] = useState(null);
     const [criterion, setCriterion] = useState('id');
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedPost, setSelectedPost] = useState(null);
@@ -27,39 +29,40 @@ export default function Posts() {
     }, [location]);
 
     useEffect(() => {
-        const fetchposts = async () => {
+        const fetchPosts = async () => {
             try {
                 const response = await fetch(`http://localhost:3000/posts?userId=${id}`);
                 const data = await response.json();
-                setUserposts(data);
+                setUserPosts(data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchposts();
+        fetchPosts();
     }, [id]);
 
-    const filterposts = (posts) => {
-        return posts.filter(post => {
-            return (
-                post.id.toString().includes(searchQuery) || post.title.includes(searchQuery)
-                // ||(post.completed.toString().includes(searchQuery))
-            );
-            //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
+    const filterPosts = (posts) => {
+        return posts.filter((post) => {
+            if (searchType === "id") {
+                return post.id.toString().includes(searchQuery);
+            } else if (searchType === "title") {
+                return post.title.includes(searchQuery);
+            }
+            return false;
         });
     };
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
+    // const handleSearchChange = (e) => {
+    //     setSearchQuery(e.target.value);
+    // };
 
-    const handleSearchSubmit = () => {
-        const queryParams = new URLSearchParams();
-        queryParams.set('search', searchQuery);
-        navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(false);
-    };
+    // const handleSearchSubmit = () => {
+    //     const queryParams = new URLSearchParams();
+    //     queryParams.set('search', searchQuery);
+    //     navigate({ search: queryParams.toString() });
+    //     setIsSearchPostOpen(false);
+    // };
 
     const handleTrashClick = async (id) => {
         const response = await fetch(`http://localhost:3000/posts/${id}`, {
@@ -67,7 +70,7 @@ export default function Posts() {
             headers: { "Content-Type": "application/json" },
         });
         if (response.ok) {
-            setUserposts((prevposts) => prevposts.filter(post => post.id !== id));
+            setUserPosts((prevPosts) => prevPosts.filter(post => post.id !== id));
         }
         else {
             console.error('Error:', response.status, response.statusText);
@@ -75,8 +78,8 @@ export default function Posts() {
     };
     const handleChangeSort = (event) => {
         setCriterion(event.target.value);
-        const sortedposts = sortItems(event.target.value, [...userposts]);
-        setUserposts(sortedposts);
+        const sortedPosts = sortItems(event.target.value, [...userPosts]);
+        setUserPosts(sortedPosts);
     };
 
     const sortItems = (criterion, items) => {
@@ -97,31 +100,31 @@ export default function Posts() {
         return sortedItems;
     };
 
-    const addpostToServer = async () => {
+    const addPostToServer = async () => {
         const response = await fetch("http://localhost:3000/posts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newPost),
         });
-        const addedpost = await response.json();
-        console.log(addedpost);
+        const addedPost = await response.json();
+        console.log(addedPost);
         if (response.ok) {
-            setUserposts((prevposts) => {
-                const updatedposts = [...prevposts, addedpost];
-                return sortItems(criterion, updatedposts);
+            setUserPosts((prevPosts) => {
+                const updatedPosts = [...prevPosts, addedPost];
+                return sortItems(criterion, updatedPosts);
             })
-            setIsAddpostOpen(false)
+            setIsAddPostOpen(false)
             setNewPost({ userId: id, title: "" });
         }
     };
 
-    const addpost = () => {
+    const addPost = () => {
         if (newPost.title !== "") {
-            addpostToServer();
+            addPostToServer();
         }
     };
 
-    const handleAddTitlepostInput = (e) => {
+    const handleAddTitlePostInput = (e) => {
         const { value } = e.target;
         console.log(value);
 
@@ -131,7 +134,7 @@ export default function Posts() {
         }));
     };
     
-    const handleAddBodypostInput = (e) => {
+    const handleAddBodyPostInput = (e) => {
         const { value } = e.target;
         console.log(value);
 
@@ -141,32 +144,60 @@ export default function Posts() {
         }));
     };
 
-    const searchpostClicked = () => {
+    const searchPostClicked = () => {
         const queryParams = new URLSearchParams(location.search);
         queryParams.set('search', '');
         navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(true);
+        setIsSearchPostOpen(true);
     };
 
-    const addpostClicked = () => {
-        setIsAddpostOpen(true);
+    const addPostClicked = () => {
+        setIsAddPostOpen(true);
     };
 
     const handleCloseSearch = () => {
         const queryParams = new URLSearchParams(location.search);
         queryParams.delete('search');
         navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(false);
+        setIsSearchPostOpen(false);
+        setIsSearchPost(false);
         setSearchQuery("");
     };
+    const handleSearchTypeChange = (e) => {
+        setSearchType(e.target.value);
+        setSearchQuery("");
+    };
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
-    const filteredposts = isSearchpostOpen ? userposts : filterposts(userposts)
+    const handleSearchSubmit = () => {
+        const queryParams = new URLSearchParams();
+        queryParams.set("search", searchQuery);
+        navigate({ search: queryParams.toString() });
+        setIsSearchPost(true);
+
+    };
+
+    // const filterTodos = (todos) => {
+    //     return todos.filter((todo) => {
+    //         if (searchType === "id") {
+    //             return todo.id.toString().includes(searchQuery);
+    //         } else if (searchType === "title") {
+    //             return todo.title.includes(searchQuery);
+    //         } else if (searchType === "status") {
+    //             return todo.completed.toString().includes(searchQuery);
+    //         }
+    //         return false;
+    //     });
+    // };
+    const filteredPosts = !isSearchPost ? userPosts : filterPosts(userPosts)
 
     return (
         <UserContext.Provider value={selectedPost}>
             <div className="posts-container">
                 <div className="outlet-wrapper">
-                    {selectedPost && <Outlet context={{ setSelectedPost,editingpost,setEditingpost,titleRef,bodyRef ,setUserposts }}/>}
+                    {selectedPost && <Outlet context={{ setSelectedPost,editingPost,setEditingPost,titleRef,bodyRef ,setUserPosts }}/>}
                 </div>
     
                 <div>
@@ -176,8 +207,8 @@ export default function Posts() {
                     ) : (
                         <>
                             <div>
-                                <button onClick={addpostClicked}>Add post</button>
-                                <button onClick={searchpostClicked}>Search post</button>
+                                <button onClick={addPostClicked}>Add post</button>
+                                <button onClick={searchPostClicked}>Search post</button>
                                 <label htmlFor="sort-select">Sort by:</label>
                                 <select id="sort-select" onChange={handleChangeSort}>
                                     <option value="id">ID</option>
@@ -185,28 +216,37 @@ export default function Posts() {
                                     <option value="random">Random</option>
                                 </select>
                             </div>
-                            {isAddpostOpen && (
+                            {isAddPostOpen && (
                                 <div>
-                                    <FaTimes onClick={() => setIsAddpostOpen(false)} />
-                                    <input name="title" onChange={handleAddTitlepostInput} type="text" value={newPost.title} placeholder="Add title..." />
-                                    <input name="body" onChange={handleAddBodypostInput} type="text" value={newPost.body} placeholder="Add body..." />
-                                    <button onClick={addpost}>Save post</button>
+                                    <FaTimes onClick={() => setIsAddPostOpen(false)} />
+                                    <input name="title" onChange={handleAddTitlePostInput} type="text" value={newPost.title} placeholder="Add title..." />
+                                    <input name="body" onChange={handleAddBodyPostInput} type="text" value={newPost.body} placeholder="Add body..." />
+                                    <button onClick={addPost}>Save post</button>
                                 </div>
                             )}
-                            {isSearchpostOpen && (
+                            {isSearchPostOpen && (
                                 <div>
                                     <FaTimes onClick={handleCloseSearch} />
+                                    <select
+                                value={searchType}
+                                onChange={handleSearchTypeChange}
+                                style={{ marginRight: "10px" }}
+                            >
+                                <option value="id">Search by ID</option>
+                                <option value="title">Search by Title</option>
+                            </select>
                                     <input
                                         type="text"
-                                        placeholder="Search by ID, title, or status..."
+                                        placeholder={`Enter ${searchType}...`}
                                         value={searchQuery}
                                         onChange={handleSearchChange}
+                                        style={{ marginRight: "10px" }}
                                     />
                                     <button onClick={handleSearchSubmit}>Search</button>
                                 </div>
                             )}
-                            {filteredposts.length > 0 ? (
-                                filteredposts.map((post) => (
+                            {filteredPosts.length > 0 ? (
+                                filteredPosts.map((post) => (
                                     <div key={post.id} className="post-item">
                                             <div>
                                                 {post.id}
