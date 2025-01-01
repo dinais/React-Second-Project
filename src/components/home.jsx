@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams, Outlet } from "react-router-dom";
-import './todos.css'
+import './style.css';
 function Home() {
   const navigate = useNavigate();
   //const currentUser = JSON.parse(localStorage.getItem("currentUser"));

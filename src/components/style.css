@@ -158,12 +158,14 @@ footer {
 
 .nav-link {
     color: white;
+    background-color: #333;
     text-decoration: none;
     padding: 10px 15px;
     margin: 0;
     border-radius: 5px;
     transition: background-color 0.3s ease;
     font-size: 16px;
+    
 }
 
 .nav-link:hover {
@@ -258,4 +260,18 @@ footer {
     font-size: 14px;
     margin-right: 10px;
   }
-/* //sdf */
+  .posts-container {
+    position: relative;
+}
+
+.outlet-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* Make it appear on top */
+    background-color: white; /* Optional: Ensure visibility */
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
+    background-color: #c0392b;
+}

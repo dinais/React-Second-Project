@@ -1,12 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Home from "./pages/Home";
-import CompleteProfile from "./pages/CompleteProfile";
-import Posts from "./pages/posts";
-import Todos from "./pages/todos";
-import Albums from "./pages/albums";
-import SpecificPost from "./pages/SpecificPost";
+import Login from "./components/login";
+import Register from "./components/register";
+import Home from "./components/home";
+import CompleteProfile from "./components/completeProfile";
+import Posts from "./components/posts";
+import Todos from "./components/todos";
+import Albums from "./components/albums";
+import SpecificPost from "./components/specificPost";
+
 function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 

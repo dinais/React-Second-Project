@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
-import './todos.css';
+import './style.css';
 
 export default function Todos() {
   const { id } = useParams();
