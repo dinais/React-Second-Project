@@ -1,15 +1,27 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
+import './todos.css';
 
 export default function Todos() {
   const { id } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [userTodos, setUserTodos] = useState([]);
   const [isAddTodoOpen, setIsAddTodoOpen] = useState(false);
-  const [newTodo, setNewTodo] = useState({ userId: id, title: "",completed:false });
+  const [isSearchTodoOpen, setIsSearchTodoOpen] = useState(false);
+  const [newTodo, setNewTodo] = useState({ userId: id, title: "", completed: false });
   const [loading, setLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState(null);
   const [criterion, setCriterion] = useState('id');
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const searchQueryFromUrl = queryParams.get('search') || '';
+    setSearchQuery(searchQueryFromUrl);
+  }, [location]);
+
   useEffect(() => {
     const fetchTodos = async () => {
       try {
@@ -24,6 +36,25 @@ export default function Todos() {
     };
     fetchTodos();
   }, [id]);
+
+  const filterTodos = (todos) => {
+    return todos.filter(todo => {
+      return (
+        todo.id.toString().includes(searchQuery) || todo.title.includes(searchQuery) ||(todo.completed.toString().includes(searchQuery))
+      );
+      //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
+    });
+  };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('search', searchQuery);
+    navigate({ search: queryParams.toString() });
+    setIsSearchTodoOpen(false);
+  };
 
   const handleCheckboxChange = async (id) => {
     const foundTodo = userTodos.find(todo => todo.id === id);
@@ -42,8 +73,7 @@ export default function Todos() {
       console.error('Error updating todo:', response.status, response.statusText);
     }
   };
-
-  const handleTrashClick = async (id) => {
+const handleTrashClick = async (id) => {
     const response = await fetch(`http://localhost:3000/todos/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -79,10 +109,11 @@ export default function Todos() {
   };
 
   const handleChangeSort = (event) => {
-    setCriterion(event.target.value)
+    setCriterion(event.target.value);
     const sortedTodos = sortItems(event.target.value, [...userTodos]);
     setUserTodos(sortedTodos);
   };
+
   const sortItems = (criterion, items) => {
     const sortedItems = [...items];
     switch (criterion) {
@@ -103,6 +134,7 @@ export default function Todos() {
     }
     return sortedItems;
   };
+
   const addTodoToServer = async () => {
     const response = await fetch("http://localhost:3000/todos", {
       method: "POST",
@@ -119,12 +151,14 @@ export default function Todos() {
       setIsAddTodoOpen(false)
       setNewTodo({ userId: id, title: "" });
     }
-  }
+  };
+
   const addTodo = () => {
-    if (newTodo.title != "") {
+    if (newTodo.title !== "") {
       addTodoToServer();
     }
-  }
+  };
+
   const handleAddTodoInput = (e) => {
     const { value } = e.target;
     setNewTodo((prevState) => ({
@@ -132,18 +166,37 @@ export default function Todos() {
       title: value
     }));
   };
+
+  const searchTodoClicked = () => {
+    const queryParams = new URLSearchParams(location.search);
+    queryParams.set('search', '');
+    navigate({ search: queryParams.toString() });
+    setIsSearchTodoOpen(true);
+  };
+
   const addTodoClicked = () => {
-    setIsAddTodoOpen(true)
-  }
-  return (
+    setIsAddTodoOpen(true);
+  };
+
+  const handleCloseSearch = () => {
+    const queryParams = new URLSearchParams(location.search);
+    queryParams.delete('search');
+    navigate({ search: queryParams.toString() });
+    setIsSearchTodoOpen(false);
+    setSearchQuery("");
+  };
+
+  const filteredTodos=isSearchTodoOpen?userTodos:filterTodos(userTodos)
+return (
     <div>
       <h1>Todos</h1>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        userTodos.length > 0 ? (
+        <>
           <div>
             <button onClick={addTodoClicked}>Add todo</button>
+            <button onClick={searchTodoClicked}>Search todo</button>
             <label htmlFor="sort-select">Sort by:</label>
             <select id="sort-select" onChange={handleChangeSort}>
               <option value="id">ID</option>
@@ -151,17 +204,29 @@ export default function Todos() {
               <option value="performance">Completion</option>
               <option value="random">Random</option>
             </select>
-            {isAddTodoOpen && (
-              <div>
-                <FaTimes
-                  onClick={() => setIsAddTodoOpen(false)}
-                />
-                <input name="title" onChange={handleAddTodoInput} type="text" value={newTodo.title} placeholder="Add title..." />
-                <button onClick={addTodo}>Save todo</button>
-              </div>
-            )}
-            {userTodos.map((todo) => (
-              <div key={todo.id}>
+          </div>
+          {isAddTodoOpen && (
+            <div>
+              <FaTimes onClick={() => setIsAddTodoOpen(false)} />
+              <input name="title" onChange={handleAddTodoInput} type="text" value={newTodo.title} placeholder="Add title..." />
+              <button onClick={addTodo}>Save todo</button>
+            </div>
+          )}
+          {isSearchTodoOpen && (
+            <div>
+              <FaTimes onClick={handleCloseSearch} />
+              <input
+                type="text"
+                placeholder="Search by ID, title, or status..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              <button onClick={handleSearchSubmit}>Search</button>
+            </div>
+          )}
+          {filteredTodos.length > 0 ? (
+            filteredTodos.map((todo) => (
+              <div key={todo.id} className="todo-item">
                 {editingTodo && editingTodo.id === todo.id ? (
                   <div>
                     {todo.id}
@@ -205,14 +270,11 @@ export default function Todos() {
                   </div>
                 )}
               </div>
-            ))}
-          </div>
-        ) : (
-          <div>
-            <button onClick={() => setIsAddTodoOpen(true)}>Add todo</button>
-            <div>No todos yet! Create some...</div>
-          </div>
-        )
+            ))
+          ) : (
+            <div>No todos match your search criteria</div>
+          )}
+        </>
       )}
     </div>
   );
