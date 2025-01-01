@@ -4,7 +4,6 @@ import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
 import './todos.css';
 
 export default function Posts() {
-    const UserContext = createContext();
     const { id } = useParams();
     const location = useLocation();
     const titleRef = useRef();
@@ -20,7 +19,7 @@ export default function Posts() {
     const [editingpost, setEditingpost] = useState(null);
     const [criterion, setCriterion] = useState('id');
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedPost, setSelectedPost] = useState(null);
+
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const searchQueryFromUrl = queryParams.get('search') || '';
@@ -212,24 +211,29 @@ export default function Posts() {
     const filteredposts = !isSearchPost ? userPosts : filterPosts(userPosts)
 
     return (
-        <UserContext.Provider value={posts}>
-            <div>
-                <h1>posts</h1>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <>
+        <div>
+            <h1>posts</h1>
+            {loading ? (
+                <p>Loading...</p>
+            ) : (
+                <>
+                    <div>
+                        <button onClick={addpostClicked}>Add post</button>
+                        <button onClick={searchpostClicked}>Search post</button>
+                        <label htmlFor="sort-select">Sort by:</label>
+                        <select id="sort-select" onChange={handleChangeSort}>
+                            <option value="id">ID</option>
+                            <option value="alphabetical">Alphabetical</option>
+                            <option value="random">Random</option>
+                        </select>
+                    </div>
+                    {isAddpostOpen && (
                         <div>
-                            <button onClick={addpostClicked}>Add post</button>
-                            <button onClick={searchpostClicked}>Search post</button>
-                            <label htmlFor="sort-select">Sort by:</label>
-                            <select id="sort-select" onChange={handleChangeSort}>
-                                <option value="id">ID</option>
-                                <option value="alphabetical">Alphabetical</option>
-                                <option value="random">Random</option>
-                            </select>
+                            <FaTimes onClick={() => setIsAddpostOpen(false)} />
+                            <input name="title" onChange={handleAddTitlepostInput} type="text" value={newPost.title} placeholder="Add title..." />
+                            <input name="body" onChange={handleAddBodypostInput} type="text" value={newPost.body} placeholder="Add body..." />
+                            <button onClick={addpost}>Save post</button>
                         </div>
-<<<<<<< HEAD
                     )}
                     {isSearchPostOpen && (
                         <div>
@@ -290,86 +294,27 @@ export default function Posts() {
                                             <FaTrash
                                                 style={{ marginLeft: '10px', cursor: 'pointer' }}
                                                 onClick={() => handleTrashClick(post.id)}
-=======
-                        {isAddpostOpen && (
-                            <div>
-                                <FaTimes onClick={() => setIsAddpostOpen(false)} />
-                                <input name="title" onChange={handleAddTitlepostInput} type="text" value={newPost.title} placeholder="Add title..." />
-                                <input name="body" onChange={handleAddBodypostInput} type="text" value={newPost.body} placeholder="Add body..." />
-                                <button onClick={addpost}>Save post</button>
-                            </div>
-                        )}
-                        {isSearchpostOpen && (
-                            <div>
-                                <FaTimes onClick={handleCloseSearch} />
-                                <input
-                                    type="text"
-                                    placeholder="Search by ID, title, or status..."
-                                    value={searchQuery}
-                                    onChange={handleSearchChange}
-                                />
-                                <button onClick={handleSearchSubmit}>Search</button>
-                            </div>
-                        )}
-                        {filteredposts.length > 0 ? (
-                            filteredposts.map((post) => (
-                                <div key={post.id} className="post-item">
-                                    {editingpost && editingpost.id === post.id ? (
-                                        <div>
-                                            {post.id}
-                                            <input
-                                                type="text"
-                                                defaultValue={post.title}
-                                                ref={titleRef}
->>>>>>> 15ecd9387a0269d608aae3a2b55e77f78fb65e55
                                             />
-                                            <input
-                                                type="text"
-                                                defaultValue={post.body}
-                                                ref={bodyRef}
+                                            <FaEdit
+                                                style={{ marginLeft: '10px', cursor: 'pointer' }}
+                                                onClick={() => handleEditClick(post)}
                                             />
-                                            <button
-                                                onClick={() =>
-                                                    handleSaveEdit(
-                                                        post.id,
-                                                        titleRef.current.value,
-                                                        bodyRef.current.value
-                                                    )
-                                                }
-                                            >
-                                                Save
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            {post.id}
-                                            <div>{post.title} <div />
-                                                {/* <div> {post.body}</div> */}
-                                                <Link to={`${post.id}`} className="nav-link">Show post</Link>
-                                                <FaTrash
-                                                    style={{ marginLeft: '10px', cursor: 'pointer' }}
-                                                    onClick={() => handleTrashClick(post.id)}
-                                                />
-                                                <FaEdit
-                                                    style={{ marginLeft: '10px', cursor: 'pointer' }}
-                                                    onClick={() => handleEditClick(post)}
-                                                />
-                                            </div>
-
                                         </div>
 
-                                    )}
+                                    </div>
 
-                                </div>
-                            ))
-                        ) : (
-                            <div>No posts match your search criteria</div>
-                        )}
-                    </>
-                )}
-                <Outlet />
+                                )}
 
-            </div>
-        </UserContext.Provider>
+                            </div>
+                        ))
+                    ) : (
+                        <div>No posts match your search criteria</div>
+                    )}
+                </>
+            )}
+            <Outlet />
+
+        </div>
+
     );
 }
