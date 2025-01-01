@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { FaTrash, FaEdit, FaTimes } from 'react-icons/fa';
 import './todos.css';
@@ -15,6 +15,9 @@ export default function Todos() {
   const [editingTodo, setEditingTodo] = useState(null);
   const [criterion, setCriterion] = useState('id');
   const [searchQuery, setSearchQuery] = useState("");
+  const titleRef = useRef();
+  const completedRef = useRef();
+
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -40,7 +43,8 @@ export default function Todos() {
   const filterTodos = (todos) => {
     return todos.filter(todo => {
       return (
-        todo.id.toString().includes(searchQuery) || todo.title.includes(searchQuery) ||(todo.completed.toString().includes(searchQuery))
+        todo.id.toString().includes(searchQuery) || todo.title.includes(searchQuery)
+        // ||(todo.completed.toString().includes(searchQuery))
       );
       //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
     });
@@ -91,24 +95,32 @@ export default function Todos() {
     setEditingTodo(todo);
   };
 
-  const handleSaveEdit = async (id, newTitle) => {
-    const response = await fetch(`http://localhost:3000/todos/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title: newTitle })
-    });
-    if (response.ok) {
-      setUserTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo.id === id ? { ...todo, title: newTitle } : todo
-        )
-      );
-      setEditingTodo(null);
-    } else {
-      console.error('Error updating todo:', response.status, response.statusText);
-    }
-  };
+  const handleSaveEdit = async (id, newTitle, newCompleted) => {
+    try {
+      const response = await fetch(`http://localhost:3000/todos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: id,
+          title: newTitle,
+          completed: newCompleted
+        }),
+      })
 
+      if (response.ok) {
+        setUserTodos((prevTodos) =>
+          prevTodos.map((todo) =>
+            todo.id === id ? { ...todo, title: newTitle } : todo
+          )
+        );
+        setEditingTodo(null);
+      } else {
+        console.error('Error updating todo:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  }
   const handleChangeSort = (event) => {
     setCriterion(event.target.value);
     const sortedTodos = sortItems(event.target.value, [...userTodos]);
@@ -187,7 +199,7 @@ export default function Todos() {
     setSearchQuery("");
   };
 
-  const filteredTodos=isSearchTodoOpen?userTodos:filterTodos(userTodos)
+  const filteredTodos = isSearchTodoOpen ? userTodos : filterTodos(userTodos)
 
   return (
     <div>
@@ -237,15 +249,27 @@ export default function Todos() {
                       id={`todo-${todo.id}`}
                       value={todo.title}
                       checked={todo.completed}
+                      ref={completedRef}
                       onChange={() => handleCheckboxChange(todo.id)}
                     />
-                    <input
+                    {/* <input
                       type="text"
                       defaultValue={todo.title}
                       id={`edit-${todo.id}`}
+                    /> */}
+                    <input
+                      type="text"
+                      defaultValue={todo.title}
+                      ref={titleRef}
                     />
                     <button
-                      onClick={() => handleSaveEdit(todo.id, document.getElementById(`edit-${todo.id}`).value)}
+                      onClick={() =>
+                        handleSaveEdit(
+                          todo.id,
+                          titleRef.current.value,
+                          completedRef.current.value
+                        )
+                      }
                     >
                       Save
                     </button>

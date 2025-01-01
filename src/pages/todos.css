@@ -1,9 +1,7 @@
 body {
     font-family: "Open Sans", "Alef", sans-serif;
     background-color: #ffffff;
-    /* רקע בהיר */
     color: #333;
-    /* טקסט כהה */
     margin: 0;
     padding: 0;
 
@@ -21,7 +19,6 @@ h1 {
 
 button {
     background: linear-gradient(90deg, #007BFF, #0056d2);
-    /* מעברי צבע */
     color: white;
     border: none;
     border-radius: 8px;
@@ -37,11 +34,8 @@ button:hover {
 
 .todo-container {
     background-color: #fff;
-    /* רקע כרטיסיות */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* צל עדין */
     border-radius: 10px;
-    /* קצוות מעוגלים */
     padding: 15px;
     margin: 10px 0;
     display: flex;
@@ -134,12 +128,10 @@ footer {
 
 .content {
     flex: 1;
-    /* ממלא את כל השטח שנותר */
     display: flex;
     flex-direction: column;
     padding: 20px;
     overflow-y: auto;
-    /* גלילה לתוכן ארוך */
     background-color: white;
     margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -192,7 +184,6 @@ footer {
     background-color: #c0392b;
 }
 
-/* קונטיינר של כל רשימת המשימות */
 .todos-container {
     background-color: #f8f9fa;
     border-radius: 15px;
@@ -202,7 +193,6 @@ footer {
     margin: 20px auto;
 }
 
-/* עיצוב מלבן עבור כל משימה */
 .todo-item {
     background-color: #ffffff;
     border-radius: 10px;
@@ -214,7 +204,6 @@ footer {
     justify-content: space-between;
 }
 
-/* כפתורים */
 .todo-item button {
     background: linear-gradient(90deg, #007BFF, #0056d2);
     color: white;
@@ -226,16 +215,16 @@ footer {
     transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.todo-item button:hover {
+.todo-item button:hover,
+.post-item button:hover{
     background: linear-gradient(90deg, #0056d2, #007BFF);
     transform: scale(1.05);
 }
 
-/* אייקונים */
-.todo-item {
+.todo-item,
+.post-item {
     display: flex;
     justify-content: space-between;
-    /* מרווח בין התוכן לאייקונים */
     align-items: center;
     background-color: #ffffff;
     border-radius: 10px;
@@ -246,9 +235,7 @@ footer {
 
 .todo-text {
     flex: 1;
-    /* תופס את כל המקום הפנוי */
     text-align: right
-        /* מיושר להתחלה */
 }
 
 .icon {
