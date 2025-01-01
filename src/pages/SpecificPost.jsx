@@ -1,8 +1,6 @@
 export default function SpecificPost(){
     return(<>
-        {"hi"}
+        {"hi Dina"}
         </>
     )
 }
-
-
