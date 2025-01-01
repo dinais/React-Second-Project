@@ -9,9 +9,11 @@ export default function Posts() {
     const titleRef = useRef();
     const bodyRef = useRef();
     const navigate = useNavigate();
-    const [userposts, setUserposts] = useState([]);
+    const [userPosts, setUserPosts] = useState([]);
+    const [searchType, setSearchType] = useState("id");
     const [isAddpostOpen, setIsAddpostOpen] = useState(false);
-    const [isSearchpostOpen, setIsSearchpostOpen] = useState(false);
+    const [isSearchPostOpen, setIsSearchPostOpen] = useState(false);
+    const [isSearchPost, setIsSearchPost] = useState(false);
     const [newPost, setNewPost] = useState({ userId: id, title: "", body: "" });
     const [loading, setLoading] = useState(true);
     const [editingpost, setEditingpost] = useState(null);
@@ -29,7 +31,7 @@ export default function Posts() {
             try {
                 const response = await fetch(`http://localhost:3000/posts?userId=${id}`);
                 const data = await response.json();
-                setUserposts(data);
+                setUserPosts(data);
             } catch (error) {
                 console.error("Error fetching posts:", error);
             } finally {
@@ -39,33 +41,23 @@ export default function Posts() {
         fetchposts();
     }, [id]);
 
-    const filterposts = (posts) => {
-        return posts.filter(post => {
-            return (
-                post.id.toString().includes(searchQuery) || post.title.includes(searchQuery)
-                // ||(post.completed.toString().includes(searchQuery))
-            );
-            //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
+    const filterPosts = (posts) => {
+        return posts.filter((post) => {
+            if (searchType === "id") {
+                return post.id.toString().includes(searchQuery);
+            } else if (searchType === "title") {
+                return post.title.includes(searchQuery);
+            }
+            return false;
         });
     };
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const handleSearchSubmit = () => {
-        const queryParams = new URLSearchParams();
-        queryParams.set('search', searchQuery);
-        navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(false);
-    };
-
     const handleTrashClick = async (id) => {
         const response = await fetch(`http://localhost:3000/posts/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         });
         if (response.ok) {
-            setUserposts((prevposts) => prevposts.filter(post => post.id !== id));
+            setUserPosts((prevposts) => prevposts.filter(post => post.id !== id));
         }
         else {
             console.error('Error:', response.status, response.statusText);
@@ -89,7 +81,7 @@ export default function Posts() {
             });
 
             if (response.ok) {
-                setUserposts((prevposts) =>
+                setUserPosts((prevposts) =>
                     prevposts.map((post) =>
                         post.id === id ? { ...post, title: newTitle, body: newBody } : post
                     )
@@ -104,8 +96,8 @@ export default function Posts() {
     };
     const handleChangeSort = (event) => {
         setCriterion(event.target.value);
-        const sortedposts = sortItems(event.target.value, [...userposts]);
-        setUserposts(sortedposts);
+        const sortedposts = sortItems(event.target.value, [...userPosts]);
+        setUserPosts(sortedposts);
     };
 
     const sortItems = (criterion, items) => {
@@ -135,7 +127,7 @@ export default function Posts() {
         const addedpost = await response.json();
         console.log(addedpost);
         if (response.ok) {
-            setUserposts((prevposts) => {
+            setUserPosts((prevposts) => {
                 const updatedposts = [...prevposts, addedpost];
                 return sortItems(criterion, updatedposts);
             })
@@ -172,7 +164,7 @@ export default function Posts() {
         const queryParams = new URLSearchParams(location.search);
         queryParams.set('search', '');
         navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(true);
+        setIsSearchPostOpen(true);
     };
 
     const addpostClicked = () => {
@@ -181,13 +173,42 @@ export default function Posts() {
 
     const handleCloseSearch = () => {
         const queryParams = new URLSearchParams(location.search);
-        queryParams.delete('search');
+        queryParams.delete("search");
         navigate({ search: queryParams.toString() });
-        setIsSearchpostOpen(false);
+        setIsSearchPostOpen(false);
+        setIsSearchPost(false);
+        setSearchQuery("");
+    };
+    const handleSearchTypeChange = (e) => {
+        setSearchType(e.target.value);
         setSearchQuery("");
     };
 
-    const filteredposts = isSearchpostOpen ? userposts : filterposts(userposts)
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleSearchSubmit = () => {
+        const queryParams = new URLSearchParams();
+        queryParams.set("search", searchQuery);
+        navigate({ search: queryParams.toString() });
+        setIsSearchPost(true);
+
+    };
+
+    const filterTodos = (todos) => {
+        return todos.filter((todo) => {
+            if (searchType === "id") {
+                return todo.id.toString().includes(searchQuery);
+            } else if (searchType === "title") {
+                return todo.title.includes(searchQuery);
+            } else if (searchType === "status") {
+                return todo.completed.toString().includes(searchQuery);
+            }
+            return false;
+        });
+    };
+    const filteredposts = !isSearchPost ? userPosts : filterPosts(userPosts)
 
     return (
         <div>
@@ -214,16 +235,26 @@ export default function Posts() {
                             <button onClick={addpost}>Save post</button>
                         </div>
                     )}
-                    {isSearchpostOpen && (
+                    {isSearchPostOpen && (
                         <div>
                             <FaTimes onClick={handleCloseSearch} />
+                            <select
+                                value={searchType}
+                                onChange={handleSearchTypeChange}
+                                style={{ marginRight: "10px" }}
+                            >
+                                <option value="id">Search by ID</option>
+                                <option value="title">Search by Title</option>
+                            </select>
                             <input
                                 type="text"
-                                placeholder="Search by ID, title, or status..."
+                                placeholder={`Enter ${searchType}...`}
                                 value={searchQuery}
                                 onChange={handleSearchChange}
+                                style={{ marginRight: "10px" }}
                             />
                             <button onClick={handleSearchSubmit}>Search</button>
+
                         </div>
                     )}
                     {filteredposts.length > 0 ? (

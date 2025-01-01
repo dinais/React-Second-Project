@@ -10,11 +10,13 @@ export default function Todos() {
   const [userTodos, setUserTodos] = useState([]);
   const [isAddTodoOpen, setIsAddTodoOpen] = useState(false);
   const [isSearchTodoOpen, setIsSearchTodoOpen] = useState(false);
+  const [isSearchTodo, setIsSearchTodo] = useState(false);
   const [newTodo, setNewTodo] = useState({ userId: id, title: "", completed: false });
   const [loading, setLoading] = useState(true);
   const [editingTodo, setEditingTodo] = useState(null);
   const [criterion, setCriterion] = useState('id');
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState("id");
   const titleRef = useRef();
   const completedRef = useRef();
 
@@ -41,25 +43,23 @@ export default function Todos() {
   }, [id]);
 
   const filterTodos = (todos) => {
-    return todos.filter(todo => {
-      return (
-        todo.id.toString().includes(searchQuery) || todo.title.includes(searchQuery)
-        // ||(todo.completed.toString().includes(searchQuery))
-      );
-      //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
+    return todos.filter((todo) => {
+      if (searchType === "id") {
+        return todo.id.toString().includes(searchQuery);
+      } else if (searchType === "title") {
+        return todo.title.includes(searchQuery);
+      } else if (searchType === "status") {
+        return todo.completed.toString().includes(searchQuery);
+      }
+      return false;
     });
   };
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
   const handleSearchSubmit = () => {
     const queryParams = new URLSearchParams();
-    queryParams.set('search', searchQuery);
+    queryParams.set("search", searchQuery);
     navigate({ search: queryParams.toString() });
-    setIsSearchTodoOpen(false);
+    setIsSearchTodo(true);
   };
-
   const handleCheckboxChange = async (id) => {
     const foundTodo = userTodos.find(todo => todo.id === id);
     const response = await fetch(`http://localhost:3000/todos/${id}`, {
@@ -193,13 +193,20 @@ export default function Todos() {
 
   const handleCloseSearch = () => {
     const queryParams = new URLSearchParams(location.search);
-    queryParams.delete('search');
+    queryParams.delete("search");
     navigate({ search: queryParams.toString() });
     setIsSearchTodoOpen(false);
     setSearchQuery("");
+    setIsSearchTodo(false)
   };
-
-  const filteredTodos = isSearchTodoOpen ? userTodos : filterTodos(userTodos)
+  const handleSearchTypeChange = (e) => {
+    setSearchType(e.target.value);
+    setSearchQuery("");
+  };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const filteredTodos = isSearchTodo ? filterTodos(userTodos) : userTodos;
 
   return (
     <div>
@@ -229,13 +236,24 @@ export default function Todos() {
           {isSearchTodoOpen && (
             <div>
               <FaTimes onClick={handleCloseSearch} />
+              <select
+                value={searchType}
+                onChange={handleSearchTypeChange}
+                style={{ marginRight: "10px" }}
+              >
+                <option value="id">Search by ID</option>
+                <option value="title">Search by Title</option>
+                <option value="status">Search by Status</option>
+              </select>
               <input
                 type="text"
-                placeholder="Search by ID, title, or status..."
+                placeholder={`Enter ${searchType}...`}
                 value={searchQuery}
                 onChange={handleSearchChange}
+                style={{ marginRight: "10px" }}
               />
               <button onClick={handleSearchSubmit}>Search</button>
+
             </div>
           )}
           {filteredTodos.length > 0 ? (
@@ -252,11 +270,6 @@ export default function Todos() {
                       ref={completedRef}
                       onChange={() => handleCheckboxChange(todo.id)}
                     />
-                    {/* <input
-                      type="text"
-                      defaultValue={todo.title}
-                      id={`edit-${todo.id}`}
-                    /> */}
                     <input
                       type="text"
                       defaultValue={todo.title}
