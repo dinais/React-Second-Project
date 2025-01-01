@@ -59,24 +59,6 @@ export default function Posts() {
         setIsSearchpostOpen(false);
     };
 
-    const handleCheckboxChange = async (id) => {
-        const foundpost = userposts.find(post => post.id === id);
-        const response = await fetch(`http://localhost:3000/posts/${id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ completed: !foundpost.completed })
-        });
-        if (response.ok) {
-            setUserposts((prevposts) =>
-                prevposts.map((post) =>
-                    post.id === id ? { ...post, completed: !post.completed } : post
-                )
-            );
-        } else {
-            console.error('Error updating post:', response.status, response.statusText);
-        }
-    };
-
     const handleTrashClick = async (id) => {
         const response = await fetch(`http://localhost:3000/posts/${id}`, {
             method: "DELETE",
