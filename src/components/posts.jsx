@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef,createContext} from "react";
+import { useEffect, useState, useRef, createContext } from "react";
 import { useParams, useLocation, useNavigate, Link, Outlet } from "react-router-dom";
 import { FaTrash, FaTimes } from 'react-icons/fa';
 import './style.css';
 const UserContext = createContext();
-export {UserContext}
+export { UserContext }
 export default function Posts() {
     const { id } = useParams();
     const location = useLocation();
@@ -121,7 +121,7 @@ export default function Posts() {
             title: value
         }));
     };
-    
+
     const handleAddBodyPostInput = (e) => {
         const { value } = e.target;
         console.log(value);
@@ -171,10 +171,6 @@ export default function Posts() {
     return (
         <UserContext.Provider value={selectedPost}>
             <div className="posts-container">
-                <div className="outlet-wrapper">
-                    {selectedPost && <Outlet context={{ setSelectedPost,editingPost,setEditingPost,titleRef,bodyRef ,setUserPosts }}/>}
-                </div>
-    
                 <div>
                     <h1>Posts</h1>
                     {loading ? (
@@ -203,13 +199,13 @@ export default function Posts() {
                                 <div>
                                     <FaTimes onClick={handleCloseSearch} />
                                     <select
-                                value={searchType}
-                                onChange={handleSearchTypeChange}
-                                style={{ marginRight: "10px" }}
-                            >
-                                <option value="id">Search by ID</option>
-                                <option value="title">Search by Title</option>
-                            </select>
+                                        value={searchType}
+                                        onChange={handleSearchTypeChange}
+                                        style={{ marginRight: "10px" }}
+                                    >
+                                        <option value="id">Search by ID</option>
+                                        <option value="title">Search by Title</option>
+                                    </select>
                                     <input
                                         type="text"
                                         placeholder={`Enter ${searchType}...`}
@@ -223,17 +219,16 @@ export default function Posts() {
                             {filteredPosts.length > 0 ? (
                                 filteredPosts.map((post) => (
                                     <div key={post.id} className="post-item">
-                                            <div>
-                                                {post.id}
-                                                <div>{post.title} <div />
-                                                    <Link to={`${post.id}`} onClick={() => setSelectedPost(post)} className="nav-link">Show post</Link>
-                                                    <FaTrash
-                                                        style={{ marginLeft: '10px', cursor: 'pointer' }}
-                                                        onClick={() => handleTrashClick(post.id)}
-                                                    />
- 
-                                                </div>
-                                            </div>
+                                        <div>
+                                            {selectedPost?.id == post.id ? (<Outlet context={{ setSelectedPost, editingPost, setEditingPost, titleRef, bodyRef, setUserPosts }} />) : (<> {post.id}
+                                            <div>{post.title} <div />
+                                                <Link to={`${post.id}`} onClick={() => setSelectedPost(post)} className="nav-link">Show post</Link>
+                                                <FaTrash
+                                                    style={{ marginLeft: '10px', cursor: 'pointer' }}
+                                                    onClick={() => handleTrashClick(post.id)}
+                                                />
+                                            </div></>)}
+                                        </div>
                                     </div>
                                 ))
                             ) : (
@@ -245,5 +240,5 @@ export default function Posts() {
             </div>
         </UserContext.Provider>
     );
-    
+
 }
