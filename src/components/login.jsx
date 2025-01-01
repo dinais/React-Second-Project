@@ -7,22 +7,42 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
+    // const handleLogin = async () => {
+    //     const response = await fetch(`http://localhost:3000/users/?username=${username}`);
+    //     let user = await response.json();
+    //     user = user[0];
+    //     if (user.length === 0) {
+    //         alert("User does not exist in the system");
+    //     } else if (user) {
+    //         if (user.website === password) {
+    //             localStorage.setItem("currentUser", JSON.stringify(user.id));
+    //             navigate(`/home/${user.id}`);
+    //         } else {
+    //             alert("One or more of the details are incorrect");
+    //         }
+    //     }
+    // };
     const handleLogin = async () => {
         const response = await fetch(`http://localhost:3000/users/?username=${username}`);
         let user = await response.json();
         user = user[0];
-        if (user.length === 0) {
+        
+        if (!user) {
             alert("User does not exist in the system");
-        } else if (user) {
+        } else {
             if (user.website === password) {
-                localStorage.setItem("currentUser", JSON.stringify(user.id));
+                localStorage.setItem("currentUserData", JSON.stringify({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                  }));
                 navigate(`/home/${user.id}`);
             } else {
                 alert("One or more of the details are incorrect");
             }
         }
     };
-
+    
     return (
         <div className="form-container">
             <h1>Login</h1>

@@ -54,6 +54,24 @@ export default function CompleteProfile() {
       },
     };
 
+    //   try {
+    //     const response = await fetch("http://localhost:3000/users", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(updatedUser),
+    //     });
+    //     const addedUser = await response.json();
+    //     console.log('User ID:', addedUser.id);
+    //     if (response.ok) {
+    //       localStorage.setItem("currentUser", JSON.stringify(addedUser.id));
+    //       alert("הפרופיל עודכן בהצלחה");
+    //       navigate(`/home/${addedUser.id}`);} else {
+    //       alert("שגיאה בעדכון פרטי המשתמש");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error updating user profile:", error);
+    //   }
+    // };
     try {
       const response = await fetch("http://localhost:3000/users", {
         method: "POST",
@@ -63,9 +81,14 @@ export default function CompleteProfile() {
       const addedUser = await response.json();
       console.log('User ID:', addedUser.id);
       if (response.ok) {
-        localStorage.setItem("currentUser", JSON.stringify(addedUser.id));
+        localStorage.setItem("currentUserData", JSON.stringify({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        }));
         alert("הפרופיל עודכן בהצלחה");
-        navigate(`/home/${addedUser.id}`);} else {
+        navigate(`/home/${addedUser.id}`);
+      } else {
         alert("שגיאה בעדכון פרטי המשתמש");
       }
     } catch (error) {
