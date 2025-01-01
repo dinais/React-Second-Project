@@ -2,7 +2,6 @@ import { useEffect, useState, useRef,createContext} from "react";
 import { useParams, useLocation, useNavigate, Link, Outlet } from "react-router-dom";
 import { FaTrash, FaTimes } from 'react-icons/fa';
 import './style.css';
-
 const UserContext = createContext();
 export {UserContext}
 export default function Posts() {

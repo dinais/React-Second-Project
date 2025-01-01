@@ -8,7 +8,8 @@ export default function SpecificPost() {
     const post = useContext(UserContext);
     console.log(post);
     const { id } = useParams();
-    const { setSelectedPost, editingpost, setEditingpost, titleRef, bodyRef, setUserposts } = useOutletContext();
+    const { setSelectedPost, editingPost, setEditingPost, titleRef, bodyRef, setUserPosts } = useOutletContext();
+    console.log(setSelectedPost, setEditingPost, setUserPosts);
 
     const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ export default function SpecificPost() {
         navigate(`/home/${id}/posts`);
     };
     const handleEditClick = (post) => {
-        setEditingpost(post);
+        setEditingPost(post);
     };
 
     const handleSaveEdit = async (id, newTitle, newBody) => {
@@ -33,12 +34,12 @@ export default function SpecificPost() {
             });
 
             if (response.ok) {
-                setUserposts((prevposts) =>
-                    prevposts.map((post) =>
+                setUserPosts((prevPosts) =>
+                    prevPosts.map((post) =>
                         post.id === id ? { ...post, title: newTitle, body: newBody } : post
                     )
                 );
-                setEditingpost(null);
+                setEditingPost(null);
                 handleClose()
             } else {
                 console.error("Error updating post:", response.status, response.statusText);
@@ -48,7 +49,7 @@ export default function SpecificPost() {
         }
     };
     return (
-        editingpost && editingpost.id === post.id ? (
+        editingPost && editingPost.id === post.id ? (
             <div>
                 {post.id}
                 <input
