@@ -52,17 +52,6 @@ export default function Posts() {
             return false;
         });
     };
-    // const handleSearchChange = (e) => {
-    //     setSearchQuery(e.target.value);
-    // };
-
-    // const handleSearchSubmit = () => {
-    //     const queryParams = new URLSearchParams();
-    //     queryParams.set('search', searchQuery);
-    //     navigate({ search: queryParams.toString() });
-    //     setIsSearchPostOpen(false);
-    // };
-
     const handleTrashClick = async (id) => {
         const response = await fetch(`http://localhost:3000/posts/${id}`, {
             method: "DELETE",
@@ -177,19 +166,6 @@ export default function Posts() {
         setIsSearchPost(true);
 
     };
-
-    // const filterTodos = (todos) => {
-    //     return todos.filter((todo) => {
-    //         if (searchType === "id") {
-    //             return todo.id.toString().includes(searchQuery);
-    //         } else if (searchType === "title") {
-    //             return todo.title.includes(searchQuery);
-    //         } else if (searchType === "status") {
-    //             return todo.completed.toString().includes(searchQuery);
-    //         }
-    //         return false;
-    //     });
-    // };
     const filteredPosts = !isSearchPost ? userPosts : filterPosts(userPosts)
 
     return (
