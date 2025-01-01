@@ -42,6 +42,7 @@ export default function Todos() {
       return (
         todo.id.toString().includes(searchQuery) || todo.title.includes(searchQuery) ||(todo.completed.toString().includes(searchQuery))
       );
+      //להפריד לסלקט שאחרי הבחירה ע''י איזה חיפוש יפתח לי תיבת חיפוש- תיבת החיפוש לא ניפתחת לבד....
     });
   };
   const handleSearchChange = (e) => {
