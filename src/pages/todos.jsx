@@ -77,8 +77,7 @@ export default function Todos() {
       console.error('Error updating todo:', response.status, response.statusText);
     }
   };
-
-  const handleTrashClick = async (id) => {
+const handleTrashClick = async (id) => {
     const response = await fetch(`http://localhost:3000/todos/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
