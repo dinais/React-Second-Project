@@ -6,6 +6,7 @@ import CompleteProfile from "./pages/CompleteProfile";
 import Posts from "./pages/posts";
 import Todos from "./pages/todos";
 import Albums from "./pages/albums";
+import SpecificPost from "./pages/SpecificPost";
 function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -17,7 +18,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/home/:id/*" element={<Home />} >
           <Route path="todos" element={<Todos />}></Route>
-          <Route path="posts" element={<Posts />}></Route>
+          <Route path="posts" element={<Posts />}>
+            <Route path=":postId" element={<SpecificPost />} /></Route>
           <Route path="albums" element={<Albums />}></Route>
         </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />
