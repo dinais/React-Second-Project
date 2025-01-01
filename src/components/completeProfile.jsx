@@ -81,10 +81,10 @@ export default function CompleteProfile() {
       const addedUser = await response.json();
       console.log('User ID:', addedUser.id);
       if (response.ok) {
-        localStorage.setItem("currentUserData", JSON.stringify({
-          id: user.id,
-          name: user.name,
-          email: user.email,
+        localStorage.setItem("currentUser", JSON.stringify({
+          id: addedUser.id,
+          name: addedUser.name,
+          email: addedUser.email,
         }));
         alert("הפרופיל עודכן בהצלחה");
         navigate(`/home/${addedUser.id}`);

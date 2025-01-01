@@ -4,6 +4,7 @@ import { FaEdit, FaTimes } from "react-icons/fa";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 export default function SpecificPost() {
+    const{email}=JSON.parse(localStorage.getItem("currentUser"));
     const post = useContext(UserContext);
     const { id } = useParams();
     const {
@@ -17,30 +18,29 @@ export default function SpecificPost() {
     const [comments, setComments] = useState(false);
     const [userComments, setUserComments] = useState([]);
     const [isAddCommentOpen, setIsAddCommentOpen] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
     const [newComment, setNewComment] = useState({
         postId: post.id,
         name: "",
-        email: "",
+        email: email,
         body: "",
     });
 
-    useEffect(() => {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        console.log(currentUser);
-        console.log(post.id);
-        console.log(id);
+    // useEffect(() => {
+    //     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    //     console.log(currentUser);
+    //     console.log(post.id);
+    //     console.log(id);
         
-        if (currentUser) {
-            setNewComment((prevState) => ({
-                ...prevState,
-                // name: currentUser.name,
-                email: currentUser.email,
-            }));
-        }
-    }, [post.id]);
+    //     if (currentUser) {
+    //         setNewComment((prevState) => ({
+    //             ...prevState,
+    //             // name: currentUser.name,
+    //             email: currentUser.email,
+    //         }));
+    //     }
+    // }, [post.id]);
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -52,9 +52,7 @@ export default function SpecificPost() {
                 setUserComments(data);
             } catch (error) {
                 console.error("Error fetching comments:", error);
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
         if (comments) {
             fetchComments();
