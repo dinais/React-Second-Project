@@ -260,3 +260,15 @@ footer {
 .icon:hover {
     color: #0056d2;
 }
+.search-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-input {
+    width: 150px;
+    padding: 5px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  
