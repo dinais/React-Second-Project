@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./posts";
-import { FaEdit, FaTimes,FaTrash } from "react-icons/fa";
+import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 export default function SpecificPost() {
@@ -148,7 +148,12 @@ export default function SpecificPost() {
             const response = await fetch(`http://localhost:3000/comments/${editingCommentId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ body: editingCommentBody }),
+                body: JSON.stringify({
+                    postId: post.id,
+                    name: newComment.name,
+                    email: newComment.email,
+                    body: editingCommentBody
+                }),
             });
 
             if (response.ok) {
@@ -234,7 +239,7 @@ export default function SpecificPost() {
                                 value={newComment.body}
                                 placeholder="Add body..."
                             />
-                             <input
+                            <input
                                 name="name"
                                 onChange={handleAddNameCommentInput}
                                 type="text"
@@ -254,7 +259,7 @@ export default function SpecificPost() {
                                         onChange={handleEditBodyInputChange}
                                     />
                                     <button onClick={handleEditComment}>Save</button>
-                                    <FaTimes onClick={() => setEditingCommentId(null)}/>
+                                    <FaTimes onClick={() => setEditingCommentId(null)} />
                                 </div>
                             ) : (
                                 <div>
