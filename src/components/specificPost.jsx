@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "./posts";
-import { FaEdit, FaTimes } from "react-icons/fa";
+import { FaEdit, FaTimes,FaTrash } from "react-icons/fa";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 export default function SpecificPost() {
-    const{email}=JSON.parse(localStorage.getItem("currentUser"));
+    const { email } = JSON.parse(localStorage.getItem("currentUser"));
     const post = useContext(UserContext);
     const { id } = useParams();
     const {
@@ -18,6 +18,8 @@ export default function SpecificPost() {
     const [comments, setComments] = useState(false);
     const [userComments, setUserComments] = useState([]);
     const [isAddCommentOpen, setIsAddCommentOpen] = useState(false);
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editingCommentBody, setEditingCommentBody] = useState("");
 
     const navigate = useNavigate();
     const [newComment, setNewComment] = useState({
@@ -26,21 +28,6 @@ export default function SpecificPost() {
         email: email,
         body: "",
     });
-
-    // useEffect(() => {
-    //     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    //     console.log(currentUser);
-    //     console.log(post.id);
-    //     console.log(id);
-        
-    //     if (currentUser) {
-    //         setNewComment((prevState) => ({
-    //             ...prevState,
-    //             // name: currentUser.name,
-    //             email: currentUser.email,
-    //         }));
-    //     }
-    // }, [post.id]);
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -52,7 +39,7 @@ export default function SpecificPost() {
                 setUserComments(data);
             } catch (error) {
                 console.error("Error fetching comments:", error);
-            } 
+            }
         };
         if (comments) {
             fetchComments();
@@ -138,9 +125,52 @@ export default function SpecificPost() {
         }
     };
 
+    const deleteComment = async (commentId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/comments/${commentId}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                setUserComments((prevComments) =>
+                    prevComments.filter((comment) => comment.id !== commentId)
+                );
+            } else {
+                console.error("Error deleting comment:", response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+        }
+    };
+
+    const handleEditComment = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/comments/${editingCommentId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ body: editingCommentBody }),
+            });
+
+            if (response.ok) {
+                setUserComments((prevComments) =>
+                    prevComments.map((comment) =>
+                        comment.id === editingCommentId ? { ...comment, body: editingCommentBody } : comment
+                    )
+                );
+                setEditingCommentId(null);
+                setEditingCommentBody("");
+            } else {
+                console.error("Error editing comment:", response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error("Error editing comment:", error);
+        }
+    };
+
     const addCommentClicked = () => {
         setIsAddCommentOpen(true);
     };
+
     const handleAddNameCommentInput = (e) => {
         const { value } = e.target;
         setNewComment((prevState) => ({
@@ -148,12 +178,17 @@ export default function SpecificPost() {
             name: value,
         }));
     };
+
     const handleAddBodyCommentInput = (e) => {
         const { value } = e.target;
         setNewComment((prevState) => ({
             ...prevState,
             body: value,
         }));
+    };
+
+    const handleEditBodyInputChange = (e) => {
+        setEditingCommentBody(e.target.value);
     };
 
     return editingPost && editingPost.id === post.id ? (
@@ -211,7 +246,32 @@ export default function SpecificPost() {
                     )}
                     {userComments.map((comment) => (
                         <div key={comment.id} className="comment-item">
-                            <p>{comment.body}</p>
+                            {editingCommentId === comment.id ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        defaultValue={comment.body}
+                                        onChange={handleEditBodyInputChange}
+                                    />
+                                    <button onClick={handleEditComment}>Save</button>
+                                    <FaTimes onClick={() => setEditingCommentId(null)}/>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p>{comment.body}</p>
+                                    {comment.email === email && (
+                                        <div>
+                                            <FaEdit
+                                                onClick={() => {
+                                                    setEditingCommentId(comment.id);
+                                                    setEditingCommentBody(comment.body);
+                                                }}
+                                            />
+                                            <FaTrash onClick={() => deleteComment(comment.id)} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>
