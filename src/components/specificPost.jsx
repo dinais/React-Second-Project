@@ -112,7 +112,7 @@ export default function SpecificPost() {
                 setIsAddCommentOpen(false);
                 setNewComment({
                     postId: post.id,
-                    name: newComment.name,
+                    name: "",
                     email: newComment.email,
                     body: "",
                 });
