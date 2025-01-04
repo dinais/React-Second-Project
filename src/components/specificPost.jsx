@@ -33,9 +33,12 @@ export default function SpecificPost() {
         const fetchComments = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/comments?postId=${id}`
+                    `http://localhost:3000/comments?postId=${post.id}`
                 );
+                
                 const data = await response.json();
+                console.log(data);
+                
                 setUserComments(data);
             } catch (error) {
                 console.error("Error fetching comments:", error);
