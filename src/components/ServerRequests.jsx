@@ -1,3 +1,4 @@
+
 export async function updateResource(id, body, type) {
     const response = await fetch(`http://localhost:3000/${type}/${id}`, {
         method: "PUT",
@@ -11,8 +12,9 @@ export async function updateResource(id, body, type) {
     return await response.json();
 }
 
-export const fetchResource = async (id, type, field) => {
-    const response = await fetch(`http://localhost:3000/${type}?${field}=${id}`);
+export async function fetchResource (id, type, field,queryString) {
+    const url = `http://localhost:3000/${type}?${field}=${id}${queryString.length > 0 ? `&${queryString}` : ''}`;
+    const response = await fetch(url);
     if (!response.ok) {
         throw new Error("Failed to fetch todos");
     }
