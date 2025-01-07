@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "./posts";
+import { useEffect, useState } from "react";
 import { FaEdit, FaTimes, FaTrash } from "react-icons/fa";
 import { useNavigate, useParams, useOutletContext } from "react-router-dom";
 
 export default function SpecificPost() {
     const { email } = JSON.parse(localStorage.getItem("currentUser"));
-    const post = useContext(UserContext);
+    // const post = useContext(UserContext);
     const { id } = useParams();
     const {
         setSelectedPost,
@@ -14,7 +13,10 @@ export default function SpecificPost() {
         titleRef,
         bodyRef,
         setUserPosts,
+        selectedPost
     } = useOutletContext();
+    {console.log(selectedPost);
+    }
     const [comments, setComments] = useState(false);
     const [userComments, setUserComments] = useState([]);
     const [isAddCommentOpen, setIsAddCommentOpen] = useState(false);
@@ -23,7 +25,7 @@ export default function SpecificPost() {
 
     const navigate = useNavigate();
     const [newComment, setNewComment] = useState({
-        postId: post.id,
+        postId: selectedPost.id,
         name: "",
         email: email,
         body: "",
@@ -33,7 +35,7 @@ export default function SpecificPost() {
         const fetchComments = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/comments?postId=${post.id}`
+                    `http://localhost:3000/comments?postId=${selectedPost.id}`
                 );
                 
                 const data = await response.json();
@@ -111,7 +113,7 @@ export default function SpecificPost() {
                 setUserComments((prevComments) => [...prevComments, addedComment]);
                 setIsAddCommentOpen(false);
                 setNewComment({
-                    postId: post.id,
+                    postId: selectedPost.id,
                     name: "",
                     email: newComment.email,
                     body: "",
@@ -152,7 +154,7 @@ export default function SpecificPost() {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    postId: post.id,
+                    postId: selectedPost.id,
                     name: newComment.name,
                     email: newComment.email,
                     body: editingCommentBody
@@ -199,15 +201,15 @@ export default function SpecificPost() {
         setEditingCommentBody(e.target.value);
     };
 
-    return editingPost && editingPost.id === post.id ? (
+    return editingPost && editingPost.id === selectedPost.id ? (
         <div>
-            {post.id}
-            <input type="text" defaultValue={post.title} ref={titleRef} />
-            <input type="text" defaultValue={post.body} ref={bodyRef} />
+            {selectedPost.id}
+            <input type="text" defaultValue={selectedPost.title} ref={titleRef} />
+            <input type="text" defaultValue={selectedPost.body} ref={bodyRef} />
             <button
                 onClick={() =>
                     handleSaveEdit(
-                        post.id,
+                        selectedPost.id,
                         titleRef.current.value,
                         bodyRef.current.value
                     )
@@ -219,13 +221,13 @@ export default function SpecificPost() {
     ) : (
         <div>
             <FaTimes onClick={handleClose} />
-            {post.id}
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
+            {selectedPost.id}
+            <h3>{selectedPost.title}</h3>
+            <p>{selectedPost.body}</p>
             <button onClick={showComments}>Show comments</button>
             <FaEdit
                 style={{ marginLeft: "10px", cursor: "pointer" }}
-                onClick={() => handleEditClick(post)}
+                onClick={() => handleEditClick(selectedPost)}
             />
             {comments && (
                 <div>

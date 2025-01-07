@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, createContext } from "react";
-import { useParams, useLocation, useNavigate, Link, Outlet } from "react-router-dom";
-import { FaTrash, FaTimes } from 'react-icons/fa';
+import { useParams, useLocation, useNavigate} from "react-router-dom";
 import './style.css';
+import {SearchPost,PostsList,AddNewPost} from "./postsActions"
 const UserContext = createContext();
 export { UserContext }
 export default function Posts() {
@@ -21,6 +21,7 @@ export default function Posts() {
     const [criterion, setCriterion] = useState('id');
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedPost, setSelectedPost] = useState(null);
+    const [selecShowAllPost, setSelecShowAllPost] = useState(false);
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const searchQueryFromUrl = queryParams.get('search') || '';
@@ -30,7 +31,7 @@ export default function Posts() {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/posts?userId=${id}`);
+                const response = !selecShowAllPost ? await fetch(`http://localhost:3000/posts?userId=${id}`) : await fetch(`http://localhost:3000/posts`);
                 const data = await response.json();
                 setUserPosts(data);
             } catch (error) {
@@ -40,7 +41,7 @@ export default function Posts() {
             }
         };
         fetchPosts();
-    }, [id]);
+    }, [id, selecShowAllPost]);
 
     const filterPosts = (posts) => {
         return posts.filter((post) => {
@@ -151,10 +152,12 @@ export default function Posts() {
         setIsSearchPost(false);
         setSearchQuery("");
     };
+
     const handleSearchTypeChange = (e) => {
         setSearchType(e.target.value);
         setSearchQuery("");
     };
+
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -169,76 +172,51 @@ export default function Posts() {
     const filteredPosts = !isSearchPost ? userPosts : filterPosts(userPosts)
 
     return (
-        <UserContext.Provider value={selectedPost}>
-            <div className="posts-container">
-                <div>
-                    <h1>Posts</h1>
-                    {loading ? (
-                        <p>Loading...</p>
-                    ) : (
-                        <>
-                            <div>
-                                <button onClick={addPostClicked}>Add post</button>
-                                <button onClick={searchPostClicked}>Search post</button>
-                                <label htmlFor="sort-select">Sort by:</label>
-                                <select id="sort-select" onChange={handleChangeSort}>
-                                    <option value="id">ID</option>
-                                    <option value="alphabetical">Alphabetical</option>
-                                    <option value="random">Random</option>
-                                </select>
-                            </div>
-                            {isAddPostOpen && (
-                                <div>
-                                    <FaTimes onClick={() => setIsAddPostOpen(false)} />
-                                    <input name="title" onChange={handleAddTitlePostInput} type="text" value={newPost.title} placeholder="Add title..." />
-                                    <input name="body" onChange={handleAddBodyPostInput} type="text" value={newPost.body} placeholder="Add body..." />
-                                    <button onClick={addPost}>Save post</button>
-                                </div>
-                            )}
-                            {isSearchPostOpen && (
-                                <div>
-                                    <FaTimes onClick={handleCloseSearch} />
-                                    <select
-                                        value={searchType}
-                                        onChange={handleSearchTypeChange}
-                                        style={{ marginRight: "10px" }}
-                                    >
-                                        <option value="id">Search by ID</option>
-                                        <option value="title">Search by Title</option>
-                                    </select>
-                                    <input
-                                        type="text"
-                                        placeholder={`Enter ${searchType}...`}
-                                        value={searchQuery}
-                                        onChange={handleSearchChange}
-                                        style={{ marginRight: "10px" }}
-                                    />
-                                    <button onClick={handleSearchSubmit}>Search</button>
-                                </div>
-                            )}
-                            {filteredPosts.length > 0 ? (
-                                filteredPosts.map((post) => (
-                                    <div key={post.id} className="post-item">
-                                        <div>
-                                            {selectedPost?.id == post.id ? (<Outlet context={{ setSelectedPost, editingPost, setEditingPost, titleRef, bodyRef, setUserPosts }} />) : (<> {post.id}
-                                            <div>{post.title} <div />
-                                                <Link to={`${post.id}`} onClick={() => setSelectedPost(post)} className="nav-link">Show post</Link>
-                                                <FaTrash
-                                                    style={{ marginLeft: '10px', cursor: 'pointer' }}
-                                                    onClick={() => handleTrashClick(post.id)}
-                                                />
-                                            </div></>)}
-                                        </div>
-                                    </div>
-                                ))
-                            ) : (
-                                <div>No posts match your search criteria</div>
-                            )}
-                        </>
-                    )}
-                </div>
+        <div className="posts-container">
+            <div>
+                <h1>Posts</h1>
+                {loading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <>
+                        <div>
+                            <button onClick={addPostClicked}>Add post</button>
+                            <button onClick={searchPostClicked}>Search post</button>
+                            <button onClick={() => {
+                                setSelecShowAllPost(!selecShowAllPost);
+                            }}>Show all</button>
+                            <label htmlFor="sort-select">Sort by:</label>
+                            <select id="sort-select" onChange={handleChangeSort}>
+                                <option value="id">ID</option>
+                                <option value="alphabetical">Alphabetical</option>
+                                <option value="random">Random</option>
+                            </select>
+                        </div>
+                        {isAddPostOpen && (
+                            <AddNewPost
+                                setIsAddPostOpen={setIsAddPostOpen}
+                                handleAddTitlePostInput={handleAddTitlePostInput}
+                                handleAddBodyPostInput={handleAddBodyPostInput}
+                                newPost={newPost}
+                                addPost={addPost}
+                            />
+                        )}
+                        {isSearchPostOpen && (
+                            <SearchPost handleCloseSearch={handleCloseSearch} searchType={searchType} handleSearchTypeChange={handleSearchTypeChange} searchQuery={searchQuery} handleSearchChange={handleSearchChange} handleSearchSubmit={handleSearchSubmit} />
+                        )}
+                        <PostsList filteredPosts={filteredPosts}
+                            selectedPost={selectedPost}
+                            setSelectedPost={setSelectedPost}
+                            editingPost={editingPost}
+                            setEditingPost={setEditingPost}
+                            titleRef={titleRef}
+                            bodyRef={bodyRef}
+                            setUserPosts={setUserPosts}
+                            handleTrashClick={handleTrashClick} />
+                    </>
+                )}
             </div>
-        </UserContext.Provider>
+        </div>
     );
 
 }
