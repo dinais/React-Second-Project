@@ -49,7 +49,7 @@ export default function SpecificPost() {
         if (comments) {
             fetchComments();
         }
-    }, [id, comments]);
+    }, [id, comments,selectedPost.id]);
 
     const handleClose = () => {
         setSelectedPost(null);

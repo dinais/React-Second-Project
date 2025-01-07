@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, createContext } from "react";
 import { useParams, useLocation, useNavigate} from "react-router-dom";
 import './style.css';
-import {SearchPost,PostsList,AddNewPost} from "./postsActions"
+import {SearchPost,PostsList,AddNewPost} from "./PostsActions"
 const UserContext = createContext();
 export { UserContext }
 export default function Posts() {

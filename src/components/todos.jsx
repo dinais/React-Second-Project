@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import './style.css';
 import { updateResource, fetchResource, deleteResource, createResource } from "./ServerRequests"
-import { SearchTodos, AddNewTodo } from './todosActions'
+import { SearchTodos, AddNewTodo } from './TodosActions'
 export default function Todos() {
   const { id } = useParams();
   const navigate = useNavigate();
