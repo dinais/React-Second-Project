@@ -6,6 +6,7 @@ import CompleteProfile from "./components/CompleteProfile";
 import Posts from "./components/Posts";
 import Todos from "./components/Todos";
 import Albums from "./components/Albums";
+import Photos from './components/Photos'
 import SpecificPost from "./components/SpecificPost";
 import Comments from "./components/Comments";
 function App() {
@@ -24,7 +25,9 @@ function App() {
               <Route path="comments" element={<Comments />} />
             </Route>
           </Route>
-          <Route path="albums" element={<Albums />}></Route>
+          <Route path="albums" element={<Albums />}>
+          </Route>
+          <Route path="albums/:albumId/photos" element={<Photos />} />
         </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />
       </Routes>
