@@ -12,8 +12,13 @@ export async function updateResource(id, body, type) {
     return await response.json();
 }
 
-export async function fetchResource (id, type, field,queryString) {
-    const url = `http://localhost:3000/${type}?${field}=${id}${queryString.length > 0 ? `&${queryString}` : ''}`;
+export async function fetchResource(id, type, field=null, queryString=null) {
+    let url;
+    if (field === null && queryString === null) {
+        url = `http://localhost:3000/${type}`;
+    } else {
+        url = `http://localhost:3000/${type}?${field}=${id}${queryString.length > 0 ? `&${queryString}` : ''}`;
+    } 
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error("Failed to fetch todos");

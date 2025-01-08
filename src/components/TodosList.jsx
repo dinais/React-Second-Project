@@ -35,7 +35,7 @@ export function TodosList(props) {
     }
   };
   return (<>
-    {todosArray.length > 0 ? (
+  {todosArray.length > 0 ? (
       todosArray.map((todo) => (
         <div key={todo.id} className="todo-item">
           {editingTodo && editingTodo.id === todo.id ? <EditTodo todo={todo} handleUpdateClick={handleUpdateClick} setEditingTodo={setEditingTodo}/> : (

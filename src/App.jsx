@@ -7,7 +7,7 @@ import Posts from "./components/Posts";
 import Todos from "./components/Todos";
 import Albums from "./components/Albums";
 import SpecificPost from "./components/SpecificPost";
-
+import Comments from "./components/Comments";
 function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
@@ -20,7 +20,10 @@ function App() {
         <Route path="/home/:id/*" element={<Home />} >
           <Route path="todos" element={<Todos />}></Route>
           <Route path="posts" element={<Posts />}>
-            <Route path=":postId" element={<SpecificPost />} /></Route>
+            <Route path=":postId" element={<SpecificPost />} >
+              <Route path="comments" element={<Comments />} />
+            </Route>
+          </Route>
           <Route path="albums" element={<Albums />}></Route>
         </Route>
         <Route path="/complete-profile" element={<CompleteProfile />} />

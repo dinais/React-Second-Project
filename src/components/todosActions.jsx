@@ -150,7 +150,8 @@ export function EditTodo(props) {
     >
       Save
     </button>
-  </div>)
+  </div>
+  )
 }
 EditTodo.propTypes = {
   todo: PropTypes.shape({
