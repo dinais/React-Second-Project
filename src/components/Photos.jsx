@@ -1,17 +1,28 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { fetchResource, deleteResource } from './ServerRequests'
+import { fetchResource, deleteResource, updateResource } from './ServerRequests'
 import { FaTrash, FaEdit } from 'react-icons/fa';
-import { AddNewPhoto } from './PhotosActions'
+import { AddNewPhoto, EditPhoto } from './PhotosActions'
 export default function Photos() {
     const { albumId } = useParams();
     const [photos, setPhotos] = useState([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const[isAddPhotoOpen,setIsAddPhotoOpen]=useState(false)
+    const [isAddPhotoOpen, setIsAddPhotoOpen] = useState(false)
+    const [editingPhoto, setEditingPhoto] = useState(null)
     const isLoading = useRef(false);
 
-    console.log('HI PHOTOS' + albumId);
+    useEffect(() => {
+        loadPhotos();
+    }, []);
+    const handleTrashClick = async (id) => {
+        try {
+            await deleteResource(id, "photos");
+            setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
+        } catch (error) {
+            console.error("Error deleting photo:", error.message);
+        }
+    };
     const loadPhotos = async () => {
         if (isLoading.current) return;
         isLoading.current = true;
@@ -34,22 +45,39 @@ export default function Photos() {
             isLoading.current = false;
         }
     }
-    useEffect(() => {
-        loadPhotos();
-    }, []);
-    const handleTrashClick = async (id) => {
+    const handleUpdateClick = async (id, updatedTitle, updatedUrl, updatedThumbnailUrl) => {
         try {
-            await deleteResource(id, "photos");
-            setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
+            const foundPhoto = photos.find((photo) => photo.id === id);
+            const updatedPhoto = {
+                ...foundPhoto,
+                ...(updatedUrl !== null && { url: updatedUrl }),
+                ...(updatedThumbnailUrl !== null && { thumbnailUrl: updatedThumbnailUrl })
+            };
+            const result = await updateResource(id, updatedPhoto, "photos");
+            setPhotos((prevPhotos) =>
+                prevPhotos.map((photo) => {
+                    if (photo.id === id) {
+                        return updatedTitle || updatedUrl || updatedThumbnailUrl ?
+                            { ...photo, title: updatedTitle, url: updatedUrl, thumbnailUrl: updatedThumbnailUrl } :
+                            result;
+                    }
+                    return photo;
+                })
+            );
+
+            console.log(photos);
+
+            if (updatedTitle && updatedUrl && updatedThumbnailUrl)
+                setEditingPhoto(null);
         } catch (error) {
-            console.error("Error deleting photo:", error.message);
+            console.error("Error updating photo:", error.message);
         }
     };
     return (
         <div>
             <h1>Photos</h1>
             <div>
-            <button onClick={() => setIsAddPhotoOpen(true)}>Add photo</button>
+                <button onClick={() => setIsAddPhotoOpen(true)}>Add photo</button>
                 {isAddPhotoOpen && (
                     <AddNewPhoto
                         id={albumId}
@@ -60,10 +88,16 @@ export default function Photos() {
                 {photos.map((photo) => (
                     <div key={photo.id}>
                         <img src={photo.thumbnailUrl} alt={photo.title} width={200} />
+                        <FaEdit
+                            style={{ marginLeft: "10px", cursor: "pointer" }}
+                            onClick={() => setEditingPhoto(photo)}
+                        />
                         <FaTrash
                             style={{ marginLeft: '10px', cursor: 'pointer' }}
                             onClick={() => handleTrashClick(photo.id)}
                         />
+                        {(editingPhoto && editingPhoto.id === photo.id) && <EditPhoto photo={photo} handleUpdateClick={handleUpdateClick} setEditingPhoto={setEditingPhoto} />}
+
                     </div>
                 ))}
             </div>
