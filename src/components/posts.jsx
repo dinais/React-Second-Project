@@ -39,7 +39,7 @@ export default function Posts() {
             }
         };
         fetchPosts();
-    }, [id,location, allPostsVisible]);
+    }, [id, location, allPostsVisible]);
 
 
     const handleChangeSort = (event) => {
@@ -73,45 +73,45 @@ export default function Posts() {
         navigate({ search: queryParams.toString() });
         setIsSearchPostOpen(true);
         console.log('search clicked');
-    
+
     };
 
 
     return (
-        <div className="posts-container">
-            <div>
-                <h1>Posts</h1>
-                {
-                    <>
-                        <PostsActionsBar setIsAddPostOpen={setIsAddPostOpen}
-                            searchPostClicked={searchPostClicked}
-                            handleChangeSort={handleChangeSort}
-                            allPostsVisible={allPostsVisible}
-                            setAllPostsVisible={setAllPostsVisible} />
-                        {isAddPostOpen && (
-                            <AddNewPost
-                                id={id}
-                                setIsAddPostOpen={setIsAddPostOpen}
-                                setUserPosts={setUserPosts}
-                                sortItems={sortItems}
-                                criterion={criterion}
-                            />
-                        )}
-                        {isSearchPostOpen && (
-                            <SearchPosts setFilteredPosts={setFilteredPosts} userPosts={userPosts} setIsSearchPostOpen={setIsSearchPostOpen} searchType={searchType} setSearchType={setSearchType} />
-                        )}
-                        <PostsList postsArray={isSearchPostOpen ? filteredPosts : userPosts}
-                            filtered={isSearchPostOpen}
-                            userPosts={userPosts}
+        <>
+            <div className="content-container">
+            <h1>Posts</h1>
+            {
+                <>
+                    <PostsActionsBar setIsAddPostOpen={setIsAddPostOpen}
+                        searchPostClicked={searchPostClicked}
+                        handleChangeSort={handleChangeSort}
+                        allPostsVisible={allPostsVisible}
+                        setAllPostsVisible={setAllPostsVisible} />
+                    {isAddPostOpen && (
+                        <AddNewPost
+                            id={id}
+                            setIsAddPostOpen={setIsAddPostOpen}
                             setUserPosts={setUserPosts}
-                            selectedPost={selectedPost}
-                            setSelectedPost={setSelectedPost}
-                            allPostsVisible={allPostsVisible} />
+                            sortItems={sortItems}
+                            criterion={criterion}
+                        />
+                    )}
+                    {isSearchPostOpen && (
+                        <SearchPosts setFilteredPosts={setFilteredPosts} userPosts={userPosts} setIsSearchPostOpen={setIsSearchPostOpen} searchType={searchType} setSearchType={setSearchType} />
+                    )}
+                    <PostsList postsArray={isSearchPostOpen ? filteredPosts : userPosts}
+                        filtered={isSearchPostOpen}
+                        userPosts={userPosts}
+                        setUserPosts={setUserPosts}
+                        selectedPost={selectedPost}
+                        setSelectedPost={setSelectedPost}
+                        allPostsVisible={allPostsVisible} />
 
-                    </>
-                }
+                </>
+            }
             </div>
-        </div>
+        </>
     );
 
 }

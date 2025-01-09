@@ -68,9 +68,8 @@ export default function Todos() {
 
   };
   return (
-    <div>
+    <div className="content-container">
       <h1>Todos</h1>
-      <>
         <TodoActionsBar
           setIsAddTodoOpen={setIsAddTodoOpen}
           searchTodoClicked={searchTodoClicked}
@@ -85,8 +84,12 @@ export default function Todos() {
         {
           isSearchTodoOpen && <SearchTodos setFilteredTodos={setFilteredTodos} userTodos={userTodos} setIsSearchTodoOpen={setIsSearchTodoOpen} searchType={searchType} setSearchType={setSearchType} />
         }
-        <TodosList todosArray={isSearchTodoOpen ? filteredTodos : userTodos} filtered={isSearchTodoOpen} userTodos={userTodos} setUserTodos={setUserTodos} />
-      </>
-    </div>
-  );
+          <TodosList
+            todosArray={isSearchTodoOpen ? filteredTodos : userTodos}
+            filtered={isSearchTodoOpen}
+            userTodos={userTodos}
+            setUserTodos={setUserTodos}
+          />
+      </div>
+      );
 }

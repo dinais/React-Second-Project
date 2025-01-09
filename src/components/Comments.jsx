@@ -55,7 +55,7 @@ export default function Comments() {
 
     const handleClose = () => {
         setShowComments(false);
-        navigate(`/home/${id}/posts/${postId}`);
+        navigate(`/users/${id}/posts/${postId}`);
     };
 
     return (<div>

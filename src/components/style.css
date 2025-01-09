@@ -4,7 +4,7 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -131,29 +131,73 @@ footer {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    overflow-y: auto;
     background-color: white;
-    margin: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     width: 100%;
+    height: 100%;                  /* יוצר גובה שיתמלא בתוכן */
+    overflow-y: auto;               /* מאפשר גלילה לפי הצורך */
+    overflow-x: hidden;             /* מסתיר גלילה לרוחב */
+    margin: 0 auto;                  /* מיישר במרכז במסך */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;    /* יישור התוכן מלמטה כלפי מעלה */
 }
 
-.todos-container {
+
+
+.root-container {
+    width: 100%;
+    /* תופס את כל רוחב העמוד */
+    margin: 0;
+    /* מיישר את התוכן במרכז הדף */
+    /* padding: 20px;                   מרווח פנימי */
+    /* position: sticky;                   מאפשר גמישות בעיצוב */
+    flex-direction: column;
+    /* מסדר את התוכן כעמודים */
+    background-color: #f9f9f9;
+    /* צבע רקע דף */
+    /* min-height: 100vh;               מבטיח שהתוכן לא יתכסה מתחת */
+    /* position: relative;              מיקום התוכן בעמוד */
+}
+
+.content-container {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 10px;
+    background-color: #e790b5;
+    border-radius: 15px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: 50%;
+    margin: 70px auto;
+
 }
 
 .navigation-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 1000;
     display: flex;
     justify-content: space-around;
     align-items: center;
     background-color: #333;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#root {
+    height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .nav-link {
@@ -165,7 +209,7 @@ footer {
     border-radius: 5px;
     transition: background-color 0.3s ease;
     font-size: 16px;
-    
+
 }
 
 .nav-link:hover {
@@ -186,17 +230,10 @@ footer {
     background-color: #c0392b;
 }
 
-.todos-container {
-    background-color: #f8f9fa;
-    border-radius: 15px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-    padding: 20px;
-    max-width: 600px;
-    margin: 20px auto;
-}
+
 
 .todo-item {
-    background-color: #ffffff;
+    background-color: #1ccc4e;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
@@ -208,7 +245,7 @@ footer {
 
 .todo-item button {
     background: linear-gradient(90deg, #007BFF, #0056d2);
-    color: white;
+    color: rgb(194, 18, 18);
     border: none;
     border-radius: 8px;
     padding: 8px 12px;
@@ -218,7 +255,7 @@ footer {
 }
 
 .todo-item button:hover,
-.post-item button:hover{
+.post-item button:hover {
     background: linear-gradient(90deg, #0056d2, #007BFF);
     transform: scale(1.05);
 }
@@ -249,29 +286,64 @@ footer {
 .icon:hover {
     color: #0056d2;
 }
+.home-container {
+    background-color: #c2d3ad;       /* צבע הרקע האדום */
+    padding: 60px;
+    max-width: 600px;                  /* מגביל את רוחב התוכן */
+    margin: 10% auto;                 /* מיישר את התוכן במרכז */
+    border-radius: 10px;               /* עיגול הפינות */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;           /* יישור התוכן בתוך ה-`div` */
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* תוספת הצללה רכה */
+    color: white;                      /* צבע האותיות */
+    text-align: center;                /* יישור האותיות למרכז */
+    font-family: 'Arial', sans-serif; /* הפונט נקי ומקצועי */
+    font-size: 24px;                   /* גודל האותיות */
+    font-weight: bold;                 /* בולטות האותיות */
+    line-height: 1.5;                  /* מרווח בין השורות */
+}
+
+
 .search-container {
     display: flex;
     align-items: center;
-  }
-  
-  .search-input {
+}
+
+.search-input {
     width: 150px;
     padding: 5px;
     font-size: 14px;
     margin-right: 10px;
-  }
-  .posts-container {
+}
+
+.posts-container {
     position: relative;
 }
 
-.outlet-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10; /* Make it appear on top */
-    background-color: white; /* Optional: Ensure visibility */
-    padding: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for emphasis */
-    background-color: #c0392b;
-}
+/* .outlet-wrapper { */
+    /* position: absolute; */
+    /* top: 0; */
+    /* left: 0; */
+    /* width: 100%; */
+    /* z-index: 10; */
+    /* Make it appear on top */
+    /* background-color: white; */
+    /* Optional: Ensure visibility */
+    /* padding: 10px; */
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    /* Optional: Add shadow for emphasis */
+    /* background-color: #c0392b; */
+/* }
+
+
+
+
+
+
+
+
+
+
+*/

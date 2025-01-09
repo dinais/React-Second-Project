@@ -22,7 +22,7 @@ export default function SpecificPost() {
 
     const handleClose = () => {
         setSelectedPost(null);
-        navigate(`/home/${id}/posts`);
+        navigate(`/users/${id}/posts`);
     };
 
     const handleUpdateClick = async (id, updatedTitle, updatedBody) => {

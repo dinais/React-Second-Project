@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Root from "./components/Root";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -15,10 +16,15 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to={currentUser ? `/home/${currentUser}` : "/login"} />} />
+        <Route path="/" element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home/:id/*" element={<Home />} >
+        <Route path="/complete-profile" element={<CompleteProfile />} />
+        <Route path="/users/home" element={<Root />}>
+          <Route index element={<Home />} />
+        </Route>
+        <Route path="/users/:id/*" element={<Root />} >
+          <Route path="home" element={<Home />}></Route>
           <Route path="todos" element={<Todos />}></Route>
           <Route path="posts" element={<Posts />}>
             <Route path=":postId" element={<SpecificPost />} >
@@ -29,7 +35,6 @@ function App() {
           </Route>
           <Route path="albums/:albumId/photos" element={<Photos />} />
         </Route>
-        <Route path="/complete-profile" element={<CompleteProfile />} />
       </Routes>
     </Router>
   );

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { fetchResource } from "./ServerRequests";
 import { SearchAlbums, AddNewAlbum } from "./AlbumsActions";
+import './style.css';
 export default function Albums() {
     const [albums, setAlbums] = useState([]);
     const [filteredAlbums, setFilteredAlbums] = useState([]);
@@ -40,6 +41,7 @@ export default function Albums() {
     };
 
     return (<>
+        <div className="content-container">
         <h1>Albums</h1>
         <button onClick={() => setIsAddAlbumOpen(true)}>Add album</button>
         {isAddAlbumOpen && <AddNewAlbum id={id} setIsAddAlbumOpen={setIsAddAlbumOpen} setAlbums={setAlbums}/>}
@@ -58,6 +60,7 @@ export default function Albums() {
                 <div>You do not have any albums, create some!</div>
             )
         )}
+        </div>
     </>)
 
 }
