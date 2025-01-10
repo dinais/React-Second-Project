@@ -1,31 +1,38 @@
 import "./LoginRegister.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/useUser";
+import{fetchResource}from './ServerRequests'
 export default function Login() {
+    const { setUserData } = useUser();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async () => {
-        const response = await fetch(`http://localhost:3000/users/?username=${username}`);
-        let user = await response.json();
-        user = user[0];
-        if (!user) {
-            alert("User does not exist in the system");
-        } else {
-            if (user.website === password) {
-                localStorage.setItem("currentUser", JSON.stringify({
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                  }));
-                navigate(`/users/${user.id}`);
+        try {
+            let user = await fetchResource(username, "users", "username");
+            user = user[0];
+            if (!user) {
+                alert("User does not exist in the system");
             } else {
-                alert("One or more of the details are incorrect");
+                if (user.website === password) {
+                    localStorage.setItem("currentUser", JSON.stringify({
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                    }));
+                    setUserData(user);
+                    navigate(`/users/${user.id}/home`);
+                } else {
+                    alert("One or more of the details are incorrect");
+                }
             }
+        } catch (error) {
+            console.error("Error fetching posts:", error);
         }
     };
-    
+
     return (
         <div className="form-container">
             <h1>Login</h1>

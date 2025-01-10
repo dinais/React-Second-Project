@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { UserProvider } from "./contexts/UserProvider";
 import Root from "./components/Root";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -14,6 +15,7 @@ function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
+    <UserProvider>
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />} />
@@ -37,6 +39,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    </UserProvider>
   );
 }
 

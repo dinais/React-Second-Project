@@ -115,7 +115,7 @@ export function AddNewTodo(props) {
   </div>)
 }
 AddNewTodo.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setIsAddTodoOpen: PropTypes.func.isRequired,
   setUserTodos: PropTypes.func.isRequired,
   sortItems: PropTypes.func.isRequired,
@@ -155,7 +155,7 @@ export function EditTodo(props) {
 }
 EditTodo.propTypes = {
   todo: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
   }).isRequired,

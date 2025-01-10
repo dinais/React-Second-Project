@@ -78,7 +78,26 @@ button:hover {
     padding: 8px;
     margin: 0 10px;
 }
-
+.center-alert {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* ממוקם במרכז העמוד */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* ייתפוס את רוב המסך */
+  }
+  
+  .center-alert p {
+    font-size: 16px;
+    color: #555;
+  }
 label {
     font-weight: bold;
     margin-right: 5px;

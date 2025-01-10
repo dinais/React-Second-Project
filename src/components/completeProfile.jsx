@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import { useUser } from "../contexts/useUser";
+import { createResource } from './ServerRequests'
 
 export default function CompleteProfile() {
+  const { setUserData } = useUser();
   const navigate = useNavigate();
   const location = useLocation();
   const newUser = location.state?.newUser;
@@ -54,24 +56,16 @@ export default function CompleteProfile() {
       },
     };
     try {
-      const response = await fetch("http://localhost:3000/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedUser),
-      });
-      const addedUser = await response.json();
+      const addedUser = await createResource("users", updatedUser)
       console.log('User ID:', addedUser.id);
-      if (response.ok) {
-        localStorage.setItem("currentUser", JSON.stringify({
-          id: addedUser.id,
-          name: addedUser.name,
-          email: addedUser.email,
-        }));
-        alert("הפרופיל עודכן בהצלחה");
-        navigate(`/users/${addedUser.id}`);
-      } else {
-        alert("שגיאה בעדכון פרטי המשתמש");
-      }
+      localStorage.setItem("currentUser", JSON.stringify({
+        id: addedUser.id,
+        name: addedUser.name,
+        email: addedUser.email,
+      }));
+      setUserData(addedUser);
+      alert("Your profile has updated sucsessfuly");
+      navigate(`/users/${addedUser.id}/home`);
     } catch (error) {
       console.error("Error updating user profile:", error);
     }
@@ -99,7 +93,6 @@ export default function CompleteProfile() {
       for (let i = 0; i < keys.length - 1; i++) {
         current = current[keys[i]];
       }
-
       current[keys[keys.length - 1]] = value;
       return updated;
     });

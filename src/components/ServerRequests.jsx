@@ -17,7 +17,7 @@ export async function fetchResource(id, type, field=null, queryString=null) {
     if (field === null && queryString === null) {
         url = `http://localhost:3000/${type}`;
     } else {
-        url = `http://localhost:3000/${type}?${field}=${id}${queryString.length > 0 ? `&${queryString}` : ''}`;
+        url = `http://localhost:3000/${type}?${field}=${id}${queryString?.length > 0 ? `&${queryString}` : ''}`;
     } 
     const response = await fetch(url);
     if (!response.ok) {
