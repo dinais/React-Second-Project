@@ -80,36 +80,44 @@ export default function Posts() {
     return (
         <>
             <div className="content-container">
-            <h1>Posts</h1>
-            {
-                <>
-                    <PostsActionsBar setIsAddPostOpen={setIsAddPostOpen}
-                        searchPostClicked={searchPostClicked}
-                        handleChangeSort={handleChangeSort}
-                        allPostsVisible={allPostsVisible}
-                        setAllPostsVisible={setAllPostsVisible} />
-                    {isAddPostOpen && (
-                        <AddNewPost
-                            id={id}
-                            setIsAddPostOpen={setIsAddPostOpen}
+                <h1>Posts</h1>
+                {
+                    <>
+                        <div className='posts-bar'>
+                            <button onClick={() => setIsAddPostOpen(true)}>Add post</button>
+                            <button onClick={searchPostClicked}>Search post</button>
+                            <button onClick={() => setAllPostsVisible(!allPostsVisible)}>
+                                {allPostsVisible ? "Show my posts" : "Show all posts"}
+                            </button>
+                            <label htmlFor="sort-select">Sort by:</label>
+                            <select id="sort-select" onChange={handleChangeSort}>
+                                <option value="id">ID</option>
+                                <option value="alphabetical">Alphabetical</option>
+                                <option value="random">Random</option>
+                            </select>
+                        </div>
+                        {isAddPostOpen && (
+                            <AddNewPost
+                                id={id}
+                                setIsAddPostOpen={setIsAddPostOpen}
+                                setUserPosts={setUserPosts}
+                                sortItems={sortItems}
+                                criterion={criterion}
+                            />
+                        )}
+                        {isSearchPostOpen && (
+                            <SearchPosts setFilteredPosts={setFilteredPosts} userPosts={userPosts} setIsSearchPostOpen={setIsSearchPostOpen} searchType={searchType} setSearchType={setSearchType} />
+                        )}
+                        <PostsList postsArray={isSearchPostOpen ? filteredPosts : userPosts}
+                            filtered={isSearchPostOpen}
+                            userPosts={userPosts}
                             setUserPosts={setUserPosts}
-                            sortItems={sortItems}
-                            criterion={criterion}
-                        />
-                    )}
-                    {isSearchPostOpen && (
-                        <SearchPosts setFilteredPosts={setFilteredPosts} userPosts={userPosts} setIsSearchPostOpen={setIsSearchPostOpen} searchType={searchType} setSearchType={setSearchType} />
-                    )}
-                    <PostsList postsArray={isSearchPostOpen ? filteredPosts : userPosts}
-                        filtered={isSearchPostOpen}
-                        userPosts={userPosts}
-                        setUserPosts={setUserPosts}
-                        selectedPost={selectedPost}
-                        setSelectedPost={setSelectedPost}
-                        allPostsVisible={allPostsVisible} />
+                            selectedPost={selectedPost}
+                            setSelectedPost={setSelectedPost}
+                            allPostsVisible={allPostsVisible} />
 
-                </>
-            }
+                    </>
+                }
             </div>
         </>
     );

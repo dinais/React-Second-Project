@@ -70,26 +70,32 @@ export default function Todos() {
   return (
     <div className="content-container">
       <h1>Todos</h1>
-        <TodoActionsBar
-          setIsAddTodoOpen={setIsAddTodoOpen}
-          searchTodoClicked={searchTodoClicked}
-          handleChangeSort={handleChangeSort}
-        />
-        {isAddTodoOpen && <AddNewTodo
-          id={id}
-          setIsAddTodoOpen={setIsAddTodoOpen}
-          setUserTodos={setUserTodos}
-          sortItems={sortItems}
-          criterion={criterion} />}
-        {
-          isSearchTodoOpen && <SearchTodos setFilteredTodos={setFilteredTodos} userTodos={userTodos} setIsSearchTodoOpen={setIsSearchTodoOpen} searchType={searchType} setSearchType={setSearchType} />
-        }
-          <TodosList
-            todosArray={isSearchTodoOpen ? filteredTodos : userTodos}
-            filtered={isSearchTodoOpen}
-            userTodos={userTodos}
-            setUserTodos={setUserTodos}
-          />
+      <div className='todo-bar'>
+        <button onClick={() => setIsAddTodoOpen(true)}>Add todo</button>
+        <button onClick={searchTodoClicked}>Search todo</button>
+        <label htmlFor="sort-select">Sort by:</label>
+        <select id="sort-select" onChange={handleChangeSort}>
+          <option value="id">ID</option>
+          <option value="alphabetical">Alphabetical</option>
+          <option value="performance">Completion</option>
+          <option value="random">Random</option>
+        </select>
       </div>
-      );
+      {isAddTodoOpen && <AddNewTodo
+        id={id}
+        setIsAddTodoOpen={setIsAddTodoOpen}
+        setUserTodos={setUserTodos}
+        sortItems={sortItems}
+        criterion={criterion} />}
+      {
+        isSearchTodoOpen && <SearchTodos setFilteredTodos={setFilteredTodos} userTodos={userTodos} setIsSearchTodoOpen={setIsSearchTodoOpen} searchType={searchType} setSearchType={setSearchType} />
+      }
+      <TodosList
+        todosArray={isSearchTodoOpen ? filteredTodos : userTodos}
+        filtered={isSearchTodoOpen}
+        userTodos={userTodos}
+        setUserTodos={setUserTodos}
+      />
+    </div>
+  );
 }

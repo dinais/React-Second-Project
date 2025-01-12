@@ -27,7 +27,7 @@ export default function Root() {
     setUserData(null)
     console.log(userData);
 
-    navigate("/login");
+    navigate("/users/home");
   };
 
   const handleLinkClick = (e) => {
