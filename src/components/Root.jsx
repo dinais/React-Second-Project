@@ -26,6 +26,7 @@ export default function Root() {
     console.log(userData);
     setUserData(null)
     console.log(userData);
+
     navigate("/login");
   };
 

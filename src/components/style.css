@@ -213,7 +213,11 @@ footer {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+<<<<<<< HEAD
     margin: 10% auto;
+=======
+    margin: 3% auto;
+>>>>>>> 164b06b83bd3289460205d3e809281ec6c3b522f
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -351,6 +355,7 @@ footer {
     padding: 60px;
     max-width: 600px;
     margin: 0 auto;
+    margin: 50% auto;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
