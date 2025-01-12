@@ -74,7 +74,7 @@ export default function Photos() {
         }
     };
     return (
-        <div>
+        <div className="content-container">
             <h1>Photos</h1>
             <div>
                 <button onClick={() => setIsAddPhotoOpen(true)}>Add photo</button>
@@ -86,7 +86,7 @@ export default function Photos() {
                     />
                 )}
                 {photos.map((photo) => (
-                    <div key={photo.id}>
+                    <div key={photo.id} className="photo">
                         <img src={photo.thumbnailUrl} alt={photo.title} width={200} />
                         <FaEdit
                             style={{ marginLeft: "10px", cursor: "pointer" }}
