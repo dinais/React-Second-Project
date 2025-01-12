@@ -24,11 +24,11 @@ export function PostsList(props) {
                                 <>
                                     {post.id}
                                     <div>{post.title}</div>
-                                    <Link to={`${post.id}`} onClick={() => setSelectedPost(post)} className="nav-link">
+                                    <Link to={`${post.id}`} onClick={() => setSelectedPost(post)} className="show">
                                         Show post
                                     </Link>
                                     {!allPostsVisible&&<FaTrash
-                                        style={{ marginLeft: '10px', cursor: 'pointer' }}
+                                        style={{ marginRight: '10px', cursor: 'pointer' }}
                                         onClick={() => handleTrashClick(post.id)}
                                     />}
                                 </>

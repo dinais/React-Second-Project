@@ -3,7 +3,7 @@ import './style.css';
 export function TodoActionsBar(props) {
     const{setIsAddTodoOpen,searchTodoClicked,handleChangeSort}=props;
     return (
-    <div>
+    <div className='todo-bar'>
         <button onClick={() => setIsAddTodoOpen(true)}>Add todo</button>
         <button onClick={searchTodoClicked}>Search todo</button>
         <label htmlFor="sort-select">Sort by:</label>

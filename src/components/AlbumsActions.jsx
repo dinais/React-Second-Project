@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaTimes } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import { createResource } from "./ServerRequests"
-
+import './style.css';
 export function SearchAlbums(props) {
     const { setFilteredAlbums, albums, setIsSearchAlbumOpen, searchType, setSearchType } = props;
     const location = useLocation();
@@ -45,7 +45,7 @@ export function SearchAlbums(props) {
       });
     };
     return (
-      <div>
+      <div >
         <FaTimes onClick={handleCloseSearch} />
         <select
           value={searchType}
@@ -62,7 +62,7 @@ export function SearchAlbums(props) {
           onChange={handleSearchChange}
           style={{ marginRight: "10px" }}
         />
-        <button onClick={handleSearchSubmit}>Search</button>
+        <button onClick={handleSearchSubmit} >Search</button>
   
       </div>);
   

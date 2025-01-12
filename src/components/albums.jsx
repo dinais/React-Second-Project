@@ -43,15 +43,15 @@ export default function Albums() {
     return (<>
         <div className="content-container">
         <h1>Albums</h1>
-        <button onClick={() => setIsAddAlbumOpen(true)}>Add album</button>
+        <button onClick={() => setIsAddAlbumOpen(true)} className="album-button">Add album</button>
         {isAddAlbumOpen && <AddNewAlbum id={id} setIsAddAlbumOpen={setIsAddAlbumOpen} setAlbums={setAlbums}/>}
-        <button onClick={searchAlbumClicked}>Search album</button>
+        <button onClick={searchAlbumClicked}  className="album-button">Search album</button>
         {isSearchAlbumOpen && searchAlbumClicked && <SearchAlbums setFilteredAlbums={setFilteredAlbums} albums={albums} setIsSearchAlbumOpen={setIsSearchAlbumOpen} searchType={searchType} setSearchType={setSearchType} />}
         {albums.length > 0 ? (
             (isSearchAlbumOpen ? filteredAlbums : albums).map((album) => (
                 <div key={album.id} className="album-item">
                     {album.id}
-                    <Link to={`${album.id}/photos`}>{album.title}</Link>
+                    <Link to={`${album.id}/photos`} className="album-link">{album.title}</Link>
                 </div>
             ))
         ) : (

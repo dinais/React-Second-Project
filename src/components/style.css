@@ -10,6 +10,19 @@ body {
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
+    overflow-x: hidden;
+    /* text-align: center; */
+}
+
+.posts-bar,
+.todo-bar {
+    text-align: center;
+}
+
+.todo,
+.album-link {
+    display: flex;
+    text-align: left;
 }
 
 h1 {
@@ -78,26 +91,30 @@ button:hover {
     padding: 8px;
     margin: 0 10px;
 }
+
 .center-alert {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* ממוקם במרכז העמוד */
+    transform: translate(-50%, -50%);
+    /* ממוקם במרכז העמוד */
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* ייתפוס את רוב המסך */
-  }
-  
-  .center-alert p {
+    z-index: 1000;
+    /* ייתפוס את רוב המסך */
+}
+
+.center-alert p {
     font-size: 16px;
     color: #555;
-  }
+}
+
 label {
     font-weight: bold;
     margin-right: 5px;
@@ -106,6 +123,7 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="url"],
 .editingTodo {
     border: none;
     border-bottom: 2px solid #007BFF;
@@ -127,6 +145,17 @@ footer {
     font-size: 0.9rem;
     margin-top: 20px;
     border-top: 1px solid #ddd;
+}
+
+.show {
+    background: linear-gradient(90deg, #007BFF, #0056d2);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    color: white;
 }
 
 .add-todo {
@@ -154,13 +183,18 @@ footer {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     width: 100%;
-    height: 100%;                  /* יוצר גובה שיתמלא בתוכן */
-    overflow-y: auto;               /* מאפשר גלילה לפי הצורך */
-    overflow-x: hidden;             /* מסתיר גלילה לרוחב */
-    margin: 0 auto;                  /* מיישר במרכז במסך */
+    height: 100%;
+    /* יוצר גובה שיתמלא בתוכן */
+    overflow-y: auto;
+    /* מאפשר גלילה לפי הצורך */
+    overflow-x: hidden;
+    /* מסתיר גלילה לרוחב */
+    margin: 0 auto;
+    /* מיישר במרכז במסך */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;    /* יישור התוכן מלמטה כלפי מעלה */
+    justify-content: flex-start;
+    /* יישור התוכן מלמטה כלפי מעלה */
 }
 
 
@@ -185,11 +219,11 @@ footer {
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    background-color: #e790b5;
+    /* background-color: #c6f1f1; */
     border-radius: 15px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); */
     padding: 20px;
-    width: 50%;
+    width: 80%;
     margin: 70px auto;
 
 }
@@ -235,7 +269,7 @@ footer {
     background-color: #575757;
 }
 
-.logout-button {
+/* .logout-button {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -243,7 +277,7 @@ footer {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-}
+} */
 
 .logout-button:hover {
     background-color: #c0392b;
@@ -262,15 +296,17 @@ footer {
     justify-content: space-between;
 }
 
-.todo-item button {
+.todo-item button,
+.album-button {
     background: linear-gradient(90deg, #007BFF, #0056d2);
-    color: rgb(194, 18, 18);
+    /* color: rgb(194, 18, 18); */
     border: none;
     border-radius: 8px;
     padding: 8px 12px;
-    font-size: 14px;
+    /* font-size: 14px; */
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
+    width: 10em;
 }
 
 .todo-item button:hover,
@@ -280,11 +316,11 @@ footer {
 }
 
 .todo-item,
-.post-item {
+.post-item,
+.album-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #e0f3ff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 15px;
@@ -298,30 +334,42 @@ footer {
 
 .icon {
     cursor: pointer;
-    margin-left: 50px;
+    margin-left: 300px;
     transition: color 0.3s ease;
 }
 
 .icon:hover {
     color: #0056d2;
 }
+
 .home-container {
-    background-color: #c2d3ad;       /* צבע הרקע האדום */
+    background-color: #c2d3ad;
+    /* צבע הרקע האדום */
     padding: 60px;
-    max-width: 600px;                  /* מגביל את רוחב התוכן */
-    margin: 10% auto;                 /* מיישר את התוכן במרכז */
-    border-radius: 10px;               /* עיגול הפינות */
+    max-width: 600px;
+    /* מגביל את רוחב התוכן */
+    margin: 10% auto;
+    /* מיישר את התוכן במרכז */
+    border-radius: 10px;
+    /* עיגול הפינות */
     display: flex;
     flex-direction: column;
-    justify-content: center;           /* יישור התוכן בתוך ה-`div` */
+    justify-content: center;
+    /* יישור התוכן בתוך ה-`div` */
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* תוספת הצללה רכה */
-    color: white;                      /* צבע האותיות */
-    text-align: center;                /* יישור האותיות למרכז */
-    font-family: 'Arial', sans-serif; /* הפונט נקי ומקצועי */
-    font-size: 24px;                   /* גודל האותיות */
-    font-weight: bold;                 /* בולטות האותיות */
-    line-height: 1.5;                  /* מרווח בין השורות */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* תוספת הצללה רכה */
+    color: white;
+    /* צבע האותיות */
+    text-align: center;
+    /* יישור האותיות למרכז */
+    font-family: 'Arial', sans-serif;
+    /* הפונט נקי ומקצועי */
+    font-size: 24px;
+    /* גודל האותיות */
+    font-weight: bold;
+    /* בולטות האותיות */
+    line-height: 1.5;
 }
 
 
@@ -342,18 +390,18 @@ footer {
 }
 
 /* .outlet-wrapper { */
-    /* position: absolute; */
-    /* top: 0; */
-    /* left: 0; */
-    /* width: 100%; */
-    /* z-index: 10; */
-    /* Make it appear on top */
-    /* background-color: white; */
-    /* Optional: Ensure visibility */
-    /* padding: 10px; */
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-    /* Optional: Add shadow for emphasis */
-    /* background-color: #c0392b; */
+/* position: absolute; */
+/* top: 0; */
+/* left: 0; */
+/* width: 100%; */
+/* z-index: 10; */
+/* Make it appear on top */
+/* background-color: white; */
+/* Optional: Ensure visibility */
+/* padding: 10px; */
+/* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+/* Optional: Add shadow for emphasis */
+/* background-color: #c0392b; */
 /* }
 
 

@@ -39,7 +39,7 @@ export function TodosList(props) {
       todosArray.map((todo) => (
         <div key={todo.id} className="todo-item">
           {editingTodo && editingTodo.id === todo.id ? <EditTodo todo={todo} handleUpdateClick={handleUpdateClick} setEditingTodo={setEditingTodo}/> : (
-            <div>
+            <div className="todo">
               {todo.id}
               <input
                 type="checkbox"
@@ -49,6 +49,7 @@ export function TodosList(props) {
                 onChange={() => handleUpdateClick(todo.id)}
               />
               {todo.title}
+              <div className="icon">
               <FaTrash
                 style={{ marginLeft: '10px', cursor: 'pointer' }}
                 onClick={() => handleTrashClick(todo.id)}
@@ -57,6 +58,7 @@ export function TodosList(props) {
                 style={{ marginLeft: '10px', cursor: 'pointer' }}
                 onClick={() => setEditingTodo(todo)}
               />
+              </div>
             </div>
           )}
         </div>

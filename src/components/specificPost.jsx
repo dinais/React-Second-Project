@@ -1,3 +1,4 @@
+import "./LoginRegister.css";
 import {useState } from "react";
 import { FaEdit, FaTimes } from "react-icons/fa";
 import { useNavigate, useParams, useOutletContext ,Link, Outlet} from "react-router-dom";
@@ -64,7 +65,7 @@ export default function SpecificPost() {
             <br></br>
             {!showComments?(<Link to="comments" 
                   onClick={() => setShowComments(true)} 
-                  className="nav-link">
+                  className="show">
                 Show comments
             </Link>):(
                 <Outlet context={{ id,postId: selectedPost.id, setShowComments }} />

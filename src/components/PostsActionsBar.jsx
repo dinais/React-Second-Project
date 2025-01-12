@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 export function PostsActionsBar(props) {
     const { setIsAddPostOpen, searchPostClicked, handleChangeSort, allPostsVisible, setAllPostsVisible } = props;
     return (
-        <div>
+        <div className='posts-bar'>
             <button onClick={() => setIsAddPostOpen(true)}>Add post</button>
             <button onClick={searchPostClicked}>Search post</button>
             <button onClick={() => setAllPostsVisible(!allPostsVisible)}>
