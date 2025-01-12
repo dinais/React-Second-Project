@@ -14,12 +14,8 @@ export default function SpecificPost() {
         allPostsVisible
     } = useOutletContext();
     const [editingPost, setEditingPost] = useState(null);
-    {
-        console.log(selectedPost);
-    }
     const [showComments, setShowComments] = useState(false);  
     const navigate = useNavigate();
-
 
     const handleClose = () => {
         setSelectedPost(null);
@@ -36,7 +32,7 @@ export default function SpecificPost() {
                     if (post.id === id) {
                         return updatedTitle || updatedBody ? 
                             { ...post, title: updatedTitle, body: updatedBody } : 
-                            result;  // אם יש עדכון, השתמש ב- result (כמו בטודוס)
+                            result;  
                     }
                     return post;
                 })

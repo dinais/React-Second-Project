@@ -17,11 +17,7 @@ export default function Login() {
                 alert("User does not exist in the system");
             } else {
                 if (user.website === password) {
-                    localStorage.setItem("currentUser", JSON.stringify({
-                        id: user.id,
-                        name: user.name,
-                        email: user.email,
-                    }));
+                    localStorage.setItem("currentUser", JSON.stringify(user));
                     setUserData(user);
                     navigate(`/users/${user.id}/home`);
                 } else {

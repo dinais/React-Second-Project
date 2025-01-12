@@ -58,11 +58,7 @@ export default function CompleteProfile() {
     try {
       const addedUser = await createResource("users", updatedUser)
       console.log('User ID:', addedUser.id);
-      localStorage.setItem("currentUser", JSON.stringify({
-        id: addedUser.id,
-        name: addedUser.name,
-        email: addedUser.email,
-      }));
+      localStorage.setItem("currentUser", JSON.stringify(addedUser));
       setUserData(addedUser);
       alert("Your profile has updated sucsessfuly");
       navigate(`/users/${addedUser.id}/home`);

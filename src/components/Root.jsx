@@ -1,12 +1,17 @@
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { useState } from 'react'
 import { useUser } from "../contexts/useUser";
+import { MdPerson } from "react-icons/md";
+import Info from "./Info"
+
 import './style.css';
 
 export default function Root() {
   const navigate = useNavigate();
  const { userData,setUserData } = useUser();
   const [didGuestPress, setDidGuestPress] = useState(false)
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
   let id;
   let name
   let isUserLoggedIn = userData && Object.keys(userData).length > 0
@@ -37,10 +42,16 @@ export default function Root() {
       return;
     }
   };
+  const handlePersonClick = () => {
+    setShowProfileModal(true);
+  };
 
   return (
     <div className="root-container">
       <nav className="navigation-bar">
+        
+      <MdPerson color="white" size={24} onClick={handlePersonClick} />
+      {showProfileModal && <Info setShowProfileModal={setShowProfileModal}/>}
         <h3 className="nav-link">
           {isUserLoggedIn
             ? <Link to={`/users/${id}/home`} className="nav-link">Welcome, {name}</Link>

@@ -104,7 +104,7 @@ export function EditPost(props) {
 }
 EditPost.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string.isRequired,
     body: PropTypes.string.isRequired,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
@@ -154,7 +154,7 @@ export function AddNewPost(props) {
   )
 }
 AddNewPost.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   setIsAddPostOpen: PropTypes.func.isRequired,
   setUserPosts: PropTypes.func.isRequired,
   sortItems: PropTypes.func.isRequired,
