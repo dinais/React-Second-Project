@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import { FaTrash } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import { deleteResource } from "./ServerRequests"
+import { deleteResource, fetchResource } from "./ServerRequests"
 export function PostsList(props) {
     const { postsArray, filtered, userPosts, setUserPosts, selectedPost, setSelectedPost,allPostsVisible } = props;
     const handleTrashClick = async (id) => {
@@ -10,7 +10,21 @@ export function PostsList(props) {
             setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
 
         } catch (error) {
-            console.error("Error deleting todo:", error.message);
+            console.error("Error deleting post:", error.message);
+        }
+        try {
+            const commentsToDelete = await fetchResource(id, "comments","postId");
+            if (commentsToDelete && commentsToDelete.length > 0) {
+                for (const comment of commentsToDelete) {
+                    await deleteResource(comment.id,"comments");
+    
+                }
+            } else {
+                console.log("לא נמצאו תגובות לפוסט הזה.");
+            }
+
+        } catch (error) {
+            console.error("Error deleting post:", error.message);
         }
   
     };

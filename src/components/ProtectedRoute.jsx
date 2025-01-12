@@ -16,6 +16,9 @@ export default function ProtectedRoute({ children }) {
       setUserData(null);
       setError(true); 
     }
+    if(!storedUser){
+        setError(true); 
+    }
   }, [userData, urlId, setUserData]);
 
   if (error) {
