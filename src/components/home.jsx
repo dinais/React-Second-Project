@@ -1,18 +1,18 @@
-import { useParams } from "react-router-dom";
 import './style.css';
 function Home() {
-  // const navigate = useNavigate();
-  //const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const { id } = useParams();
-  console.log(id);
-  // const handleLogout = () => {
-  //   localStorage.removeItem("currentUser");
-  //   navigate("/login");
-  // };
   return (
     <div className="home-container">
-      Hello, welcome to our website!!
-    </div>
+
+      Welcome to Our Website!
+
+      We are glad you are here! Here is what you can explore:<br></br>
+
+      Task Manager: Create, organize, and manage your to-do lists efficiently.<br></br>
+      Posts: View, search, and interact with posts. Add comments or share your thoughts.<br></br>
+      Albums: Browse albums, view photos, and manage your own photo collections.<br></br>
+      User Info: Access and update your personal details quickly. <br></br>
+      Explore it yourself!
+      Enjoy...   </div>
   );
 }
 
