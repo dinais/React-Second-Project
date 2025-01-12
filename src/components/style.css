@@ -418,7 +418,10 @@ footer {
     white-space: pre-wrap;
   }
 
-
-
-
+  .key {
+    font-weight: bold;   /* הדגשה ב-bold */
+    color: #333;         /* צבע טקסט מותאם */
+    font-size: 1.1em;    /* גודל טקסט מעט יותר גדול */
+  }
+  
 
