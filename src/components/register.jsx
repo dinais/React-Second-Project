@@ -10,13 +10,13 @@ export default function Register() {
 
     const handleRegister = async () => {
         if (password !== passwordVerify) {
-            alert("הסיסמאות לא תואמות");
+            alert("The passwords do not match");
             return;
         }
         const response = await fetch(`http://localhost:3000/users/?username=${username}`);
         const user = await response.json();
         if (user.length > 0) {
-            alert("שם המשתמש כבר קיים");
+            alert("Username already exists");
         } else {
             const newUser = { username, password };
             navigate("/complete-profile", { state: { newUser } });

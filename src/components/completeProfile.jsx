@@ -95,7 +95,7 @@ export default function CompleteProfile() {
   };
   return (
     <form>
-      <h1>השלם את פרטי המשתמש</h1>
+      <h1>Complete the user information</h1>
       {fields.map(({ name, placeholder, type }) => (
         <input
           key={name}

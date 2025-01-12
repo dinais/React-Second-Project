@@ -9,7 +9,7 @@ export function SearchTodos(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   const handleSearchSubmit = () => {
     const queryParams = new URLSearchParams();
     queryParams.set(searchType, searchQuery);
@@ -123,11 +123,11 @@ AddNewTodo.propTypes = {
 };
 
 export function EditTodo(props) {
-  const { todo, handleUpdateClick,setEditingTodo } = props;
+  const { todo, handleUpdateClick, setEditingTodo } = props;
   const titleRef = useRef();
   return (<div>
     {todo.id}
-    <FaTimes onClick={() => setEditingTodo(null)}/>
+    <FaTimes onClick={() => setEditingTodo(null)} />
     <input
       type="checkbox"
       id={`todo-${todo.id}`}
