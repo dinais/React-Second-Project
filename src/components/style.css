@@ -11,7 +11,6 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
-    /* text-align: center; */
 }
 
 .posts-bar,
@@ -97,7 +96,6 @@ button:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* ממוקם במרכז העמוד */
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
@@ -107,7 +105,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    /* ייתפוס את רוב המסך */
 }
 
 .center-alert p {
@@ -184,34 +181,21 @@ footer {
     border-radius: 8px;
     width: 100%;
     height: 100%;
-    /* יוצר גובה שיתמלא בתוכן */
     overflow-y: auto;
-    /* מאפשר גלילה לפי הצורך */
     overflow-x: hidden;
-    /* מסתיר גלילה לרוחב */
     margin: 0 auto;
-    /* מיישר במרכז במסך */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* יישור התוכן מלמטה כלפי מעלה */
 }
 
 
 
 .root-container {
     width: 100%;
-    /* תופס את כל רוחב העמוד */
     margin: 0;
-    /* מיישר את התוכן במרכז הדף */
-    /* padding: 20px;                   מרווח פנימי */
-    /* position: sticky;                   מאפשר גמישות בעיצוב */
     flex-direction: column;
-    /* מסדר את התוכן כעמודים */
     background-color: #f9f9f9;
-    /* צבע רקע דף */
-    /* min-height: 100vh;               מבטיח שהתוכן לא יתכסה מתחת */
-    /* position: relative;              מיקום התוכן בעמוד */
 }
 
 .content-container {
@@ -219,9 +203,7 @@ footer {
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-    /* background-color: #c6f1f1; */
     border-radius: 15px;
-    /* box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); */
     padding: 20px;
     width: 80%;
     margin: 70px auto;
@@ -269,22 +251,13 @@ footer {
     background-color: #575757;
 }
 
-/* .logout-button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-} */
 
 .logout-button:hover {
     background-color: #c0392b;
 }
 
 
-
+/* 
 .todo-item {
     background-color: #1ccc4e;
     border-radius: 10px;
@@ -294,7 +267,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+} */
 
 .todo-item button,
 .album-button {
@@ -305,7 +278,7 @@ footer {
     padding: 8px 12px;
     /* font-size: 14px; */
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition:  0.3s ease, transform 0.2s ease;
     width: 10em;
 }
 
@@ -317,7 +290,8 @@ footer {
 
 .todo-item,
 .post-item,
-.album-item {
+.album-item,
+.photo {
     display: flex;
     align-items: center;
     background-color: #e0f3ff;
@@ -337,25 +311,20 @@ footer {
     margin-left: 300px;
     transition: color 0.3s ease;
 }
-
+/* 
 .icon:hover {
-    color: #0056d2;
-}
+    /* color: #0056d2; */
+/* } */ */
 
 .home-container {
     background-color: #c2d3ad;
-    /* צבע הרקע האדום */
     padding: 60px;
     max-width: 600px;
-    /* מגביל את רוחב התוכן */
     margin: 10% auto;
-    /* מיישר את התוכן במרכז */
     border-radius: 10px;
-    /* עיגול הפינות */
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* יישור התוכן בתוך ה-`div` */
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     /* תוספת הצללה רכה */
@@ -389,20 +358,6 @@ footer {
     position: relative;
 }
 
-/* .outlet-wrapper { */
-/* position: absolute; */
-/* top: 0; */
-/* left: 0; */
-/* width: 100%; */
-/* z-index: 10; */
-/* Make it appear on top */
-/* background-color: white; */
-/* Optional: Ensure visibility */
-/* padding: 10px; */
-/* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
-/* Optional: Add shadow for emphasis */
-/* background-color: #c0392b; */
-/* }
 
 
 
@@ -412,5 +367,3 @@ footer {
 
 
 
-
-*/
