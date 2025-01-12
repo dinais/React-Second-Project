@@ -25,8 +25,12 @@ export default function SpecificPost() {
     const handleUpdateClick = async (id, updatedTitle, updatedBody) => {
         try {
             const foundPost = userPosts.find((post) => post.id === id);
-            const updatedPost = { ...foundPost, completed: !foundPost.completed, ...(updatedTitle !== null && { title: updatedTitle }), };
-            const result = await updateResource(id, updatedPost, "posts");
+            const updatedPost = { 
+                ...foundPost, 
+                ...(updatedTitle !== null && { title: updatedTitle }), 
+                ...(updatedBody !== null && { body: updatedBody }) 
+              };
+                          const result = await updateResource(id, updatedPost, "posts");
             setUserPosts((prevPosts) =>
                 prevPosts.map((post) => {
                     if (post.id === id) {
