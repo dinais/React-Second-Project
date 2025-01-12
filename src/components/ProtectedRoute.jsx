@@ -12,19 +12,15 @@ export default function ProtectedRoute({ children }) {
     const storedUser = userData || JSON.parse(localStorage.getItem("currentUser"));
 
     if (!storedUser || storedUser.id !== urlId) {
-      // הסרת המשתמש
       localStorage.removeItem("currentUser");
       setUserData(null);
-      setError(true); // הגדרת מצב השגיאה
+      setError(true); 
     }
   }, [userData, urlId, setUserData]);
 
-  // אם יש שגיאה, נבצע ניווט לעמוד השגיאה
   if (error) {
     return <Navigate to="/error" replace />;
   }
-
-  // אם הכל תקין, נרנדר את ה-children
   return children;
 }
 

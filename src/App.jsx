@@ -8,10 +8,11 @@ import CompleteProfile from "./components/CompleteProfile";
 import Posts from "./components/Posts";
 import Todos from "./components/Todos";
 import Albums from "./components/Albums";
-import Photos from './components/Photos'
+import Photos from './components/Photos';
 import SpecificPost from "./components/SpecificPost";
 import Comments from "./components/Comments";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -20,14 +21,23 @@ function App() {
     <UserProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />} />
+          {/* Redirect root path based on user's login status */}
+          <Route
+            path="/"
+            element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />}
+          />
+          {/* Authentication routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/complete-profile" element={<CompleteProfile />} />
+
+          {/* Home route */}
           <Route path="/users/home" element={<Root />}>
             <Route index element={<Home />} />
           </Route>
-          <Route path="/users/:id/*" element={<Root />} >
+
+          {/* Protected user routes */}
+          <Route path="/users/:id/*" element={<Root />}>
             <Route path="home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="todos" element={<ProtectedRoute><Todos /></ProtectedRoute>} />
             <Route path="posts" element={<ProtectedRoute><Posts /></ProtectedRoute>}>
@@ -38,6 +48,9 @@ function App() {
             <Route path="albums" element={<ProtectedRoute><Albums /></ProtectedRoute>} />
             <Route path="albums/:albumId/photos" element={<ProtectedRoute><Photos /></ProtectedRoute>} />
           </Route>
+
+          {/* Error page route */}
+          <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </Router>
     </UserProvider>
