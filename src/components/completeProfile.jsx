@@ -111,7 +111,7 @@ export default function CompleteProfile() {
         />
       ))}
       <button type="button" onClick={handleCompleteProfile}>
-        שמור והשלם
+        Save and continue
       </button>
     </form>
   );
