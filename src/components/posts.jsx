@@ -4,7 +4,6 @@ import './style.css';
 import { SearchPosts, AddNewPost } from "./PostsActions"
 import { PostsList } from "./PostsList";
 import { fetchResource } from "./ServerRequests"
-import { PostsActionsBar } from "./PostsActionsBar";
 const UserContext = createContext();
 export { UserContext }
 export default function Posts() {

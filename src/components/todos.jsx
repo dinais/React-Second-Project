@@ -3,7 +3,6 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { fetchResource } from "./ServerRequests"
 import { SearchTodos, AddNewTodo } from './TodosActions'
 import { TodosList } from './TodosList'
-import { TodoActionsBar } from "./TodoActionsBar"
 import './style.css';
 export default function Todos() {
   const { id } = useParams();
