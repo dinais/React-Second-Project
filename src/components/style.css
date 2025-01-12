@@ -12,7 +12,37 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center;
+    background: linear-gradient(135deg, #f1eff3, #2575fc); /* Gradient background */
+    color: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1.5;
+  }
+  
+  /* Heading styling */
+  .home-container h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    overflow-y: hidden;
 
+  }
 .posts-bar,
 .todo-bar {
     text-align: center;
@@ -183,7 +213,7 @@ footer {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    margin: 0 auto;
+    margin: 10% auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -320,24 +350,18 @@ footer {
     background-color: #c2d3ad;
     padding: 60px;
     max-width: 600px;
-    margin: 10% auto;
+    margin: 0 auto;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* תוספת הצללה רכה */
     color: white;
-    /* צבע האותיות */
     text-align: center;
-    /* יישור האותיות למרכז */
     font-family: 'Arial', sans-serif;
-    /* הפונט נקי ומקצועי */
     font-size: 24px;
-    /* גודל האותיות */
     font-weight: bold;
-    /* בולטות האותיות */
     line-height: 1.5;
 }
 
