@@ -10,12 +10,13 @@ const handleClose = () => {
   };
   
   return (
-    <div>
-        <FaTimes onClick={handleClose} />
+    <div className="sidebar-overlay">
+    <div className="sidebar">
+      <FaTimes className="close-btn" onClick={handleClose} />
       {storedUser ? (
         <ul>
           {Object.keys(storedUser).map((key, index) => (
-            <li key={index}>
+            <li key={index} className="user-info">
               <strong>{key}:</strong> {JSON.stringify(storedUser[key], null, 2)}
             </li>
           ))}
@@ -24,8 +25,10 @@ const handleClose = () => {
         <p>No user data available</p>
       )}
     </div>
-  );
+  </div>
+);
 }
+
 Info.propTypes = {
     setShowProfileModal: PropTypes.func.isRequired
   };

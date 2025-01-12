@@ -17,9 +17,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh; 
     text-align: center;
-    background: linear-gradient(135deg, #f1eff3, #2575fc); /* Gradient background */
+    background: linear-gradient(135deg, #f1eff3, #2575fc);
     color: #fff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
@@ -29,7 +29,6 @@ body {
     line-height: 1.5;
   }
   
-  /* Heading styling */
   .home-container h1 {
     font-size: 2.5rem;
     font-weight: bold;
@@ -288,17 +287,6 @@ footer {
 }
 
 
-/* 
-.todo-item {
-    background-color: #1ccc4e;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-} */
 
 .todo-item button,
 .album-button {
@@ -384,10 +372,51 @@ footer {
     position: relative;
 }
 
-
-
-
-
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* שקיפות כהה */
+    z-index: 9999; /* מבטיח שהחלון יהיה מעל כל שאר האלמנטים */
+    display: flex;
+    justify-content: flex-start; /* מיישר את הסיידבר מצד שמאל */
+    align-items: center; /* מיישר את התוכן בתוך הסיידבר */
+  }
+  
+  /* עיצוב הסיידבר עצמו */
+  .sidebar {
+    background-color: white;
+    width: 300px; /* רוחב הסיידבר - ניתן לשנות */
+    height: 100%; /* גובה מלא */
+    padding: 20px;
+    position: relative;
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* גלילה במידה והמידע ארוך מדי */
+  }
+  
+  /* עיצוב כפתור ה-X */
+  .close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    color: #000;
+  }
+  
+  /* עיצוב התוכן בתוך הליסט */
+  .user-info {
+    margin: 10px 0;
+    font-size: 14px;
+    white-space: pre-wrap;
+  }
 
 
 
