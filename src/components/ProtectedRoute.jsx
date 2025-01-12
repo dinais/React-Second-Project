@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     const storedUser = userData || JSON.parse(localStorage.getItem("currentUser"));
 
-    if (!storedUser || storedUser.id !== urlId) {
+    if (storedUser&& storedUser.id !== urlId) {
       localStorage.removeItem("currentUser");
       setUserData(null);
       setError(true); 

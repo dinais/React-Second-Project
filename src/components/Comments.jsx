@@ -3,11 +3,15 @@ import { useEffect, useState } from "react";
 import { fetchResource, deleteResource, updateResource } from "./ServerRequests";
 import { FaTimes, FaTrash, FaEdit } from "react-icons/fa";
 import { EditComment, AddNewComment } from "./CommentsActions"
+import { useUser } from "../contexts/useUser";
 export default function Comments() {
     const { id, postId, setShowComments } = useOutletContext();
     const navigate = useNavigate();
-    const { email } = JSON.parse(localStorage.getItem("currentUser"));
-    const [comments, setComments] = useState([]);
+    const { userData } = useUser(); 
+    const storedUser = userData || JSON.parse(localStorage.getItem("currentUser"));
+    
+    const email = storedUser?.email; 
+        const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null)
     const [isAddCommentOpen, setIsAddCommentOpen] = useState(false)
     useEffect(() => {

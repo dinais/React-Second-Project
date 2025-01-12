@@ -7,10 +7,12 @@ export function PostsList(props) {
     const handleTrashClick = async (id) => {
         try {
             await deleteResource(id, "posts");
-            setUserPosts((prevPosts) => prevPosts.filter((todo) => todo.id !== id));
+            setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+
         } catch (error) {
             console.error("Error deleting todo:", error.message);
         }
+  
     };
     return (
         <>

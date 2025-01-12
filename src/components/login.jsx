@@ -52,7 +52,7 @@ export default function Login() {
             />
             <button className="submit-button" onClick={handleLogin}>Login</button>
             <p>
-                אין לך חשבון? <button className="link-button" onClick={() => navigate("/register")}>הרשם כאן</button>
+                You do not have an account yet? <button className="link-button" onClick={() => navigate("/register")}>Register here!</button>
             </p>
         </div>
     );

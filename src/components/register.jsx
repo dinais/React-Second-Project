@@ -14,7 +14,7 @@ export default function Register() {
             return;
         }
         const response = await fetch(`http://localhost:3000/users/?username=${username}`);
-        const user = await response.json();    
+        const user = await response.json();
         if (user.length > 0) {
             alert("שם המשתמש כבר קיים");
         } else {
@@ -49,7 +49,7 @@ export default function Register() {
             />
             <button className="submit-button" onClick={handleRegister}>Register</button>
             <p>
-                כבר יש לך חשבון? <button className="link-button" onClick={() => navigate("/login")}>התחבר כאן</button>
+                You do not have an account yet? <button className="link-button" onClick={() => navigate("/login")}>Register here!</button>
             </p>
         </div>
     );
