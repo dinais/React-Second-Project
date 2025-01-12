@@ -5,7 +5,7 @@ import './style.css';
 
 export default function Root() {
   const navigate = useNavigate();
-  let { userData,setUserData } = useUser();
+ const { userData,setUserData } = useUser();
   const [didGuestPress, setDidGuestPress] = useState(false)
   let id;
   let name
@@ -15,7 +15,7 @@ export default function Root() {
       ? true
       : false;
   if (!userData && localStorage.getItem("currentUser")) {
-    userData = JSON.parse(localStorage.getItem("currentUser"));
+    setUserData(JSON.parse(localStorage.getItem("currentUser")));
   }
   if (userData) {
     id = userData.id;

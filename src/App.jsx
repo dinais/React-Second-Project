@@ -11,37 +11,37 @@ import Albums from "./components/Albums";
 import Photos from './components/Photos'
 import SpecificPost from "./components/SpecificPost";
 import Comments from "./components/Comments";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
 function App() {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
     <UserProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/complete-profile" element={<CompleteProfile />} />
-        <Route path="/users/home" element={<Root />}>
-          <Route index element={<Home />} />
-        </Route>
-        <Route path="/users/:id/*" element={<Root />} >
-          <Route path="home" element={<Home />}></Route>
-          <Route path="todos" element={<Todos />}></Route>
-          <Route path="posts" element={<Posts />}>
-            <Route path=":postId" element={<SpecificPost />} >
-              <Route path="comments" element={<Comments />} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/complete-profile" element={<CompleteProfile />} />
+          <Route path="/users/home" element={<Root />}>
+            <Route index element={<Home />} />
+          </Route>
+          <Route path="/users/:id/*" element={<Root />} >
+            <Route path="home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="todos" element={<ProtectedRoute><Todos /></ProtectedRoute>} />
+            <Route path="posts" element={<ProtectedRoute><Posts /></ProtectedRoute>}>
+              <Route path=":postId" element={<SpecificPost />} >
+                <Route path="comments" element={<Comments />} />
+              </Route>
             </Route>
+            <Route path="albums" element={<ProtectedRoute><Albums /></ProtectedRoute>} />
+            <Route path="albums/:albumId/photos" element={<ProtectedRoute><Photos /></ProtectedRoute>} />
           </Route>
-          <Route path="albums" element={<Albums />}>
-          </Route>
-          <Route path="albums/:albumId/photos" element={<Photos />} />
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
     </UserProvider>
   );
 }
 
 export default App;
-
