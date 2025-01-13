@@ -1,7 +1,7 @@
 import { useState} from "react";
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import { updateResource,deleteResource} from "./ServerRequests"
+import { updateResource,deleteFromResource} from "./ServerRequests"
 import { EditTodo } from './TodosActions'
 import './style.css';
 export function TodosList(props) {
@@ -28,7 +28,7 @@ export function TodosList(props) {
   };
   const handleTrashClick = async (id) => {
     try {
-      await deleteResource(id, "todos");
+      await deleteFromResource(id, "todos");
       setUserTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error.message);

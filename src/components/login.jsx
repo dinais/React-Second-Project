@@ -1,8 +1,8 @@
 import "./LoginRegister.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../contexts/useUser";
-import{fetchResource}from './ServerRequests'
+import { useUser } from "../contexts/UseUser";
+import { fetchResource } from './ServerRequests'
 export default function Login() {
     const { setUserData } = useUser();
     const [username, setUsername] = useState("");

@@ -26,7 +26,7 @@ export async function fetchResource(id, type, field=null, queryString=null) {
     return await response.json();
 };
 
-export async function deleteResource(id, type) {
+export async function deleteFromResource(id, type) {
     const response = await fetch(`http://localhost:3000/${type}/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

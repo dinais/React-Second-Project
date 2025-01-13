@@ -1,6 +1,6 @@
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import { useState } from 'react'
-import { useUser } from "../contexts/useUser";
+import { useUser } from "../contexts/UseUser";
 import { MdPerson } from "react-icons/md";
 import Info from "./Info"
 
@@ -28,10 +28,7 @@ export default function Root() {
   }
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
-    console.log(userData);
     setUserData(null)
-    console.log(userData);
-
     navigate("/users/home");
   };
 
@@ -42,6 +39,7 @@ export default function Root() {
       return;
     }
   };
+  
   const handlePersonClick = () => {
     setShowProfileModal(true);
   };
@@ -49,7 +47,6 @@ export default function Root() {
   return (
     <div className="root-container">
       <nav className="navigation-bar">
-
         <MdPerson color="white" size={24} onClick={handlePersonClick} />
         {showProfileModal && <Info setShowProfileModal={setShowProfileModal} />}
         <h3 className="nav-link">

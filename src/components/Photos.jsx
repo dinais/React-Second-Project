@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { fetchResource, deleteResource, updateResource } from './ServerRequests'
+import { fetchResource, deleteFromResource, updateResource } from './ServerRequests'
 import { FaTrash, FaEdit } from 'react-icons/fa';
 import { AddNewPhoto, EditPhoto } from './PhotosActions'
 export default function Photos() {
@@ -17,7 +17,7 @@ export default function Photos() {
     }, []);
     const handleTrashClick = async (id) => {
         try {
-            await deleteResource(id, "photos");
+            await deleteFromResource(id, "photos");
             setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== id));
         } catch (error) {
             console.error("Error deleting photo:", error.message);

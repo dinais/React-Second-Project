@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useUser } from "../contexts/useUser";
+import { useUser } from "../contexts/UseUser";
 import { createResource } from './ServerRequests'
 
 export default function CompleteProfile() {

@@ -4,12 +4,12 @@ import Root from "./components/Root";
 import Login from "./components/Login";
 import Register from "./components/Register.jsx";
 import Home from "./components/Home";
-import CompleteProfile from "./components/CompleteProfile";
+import CompleteProfile from "./components/CompleteProfile.jsx";
 import Posts from "./components/Posts";
 import Todos from "./components/Todos";
-import Albums from "./components/Albums";
+import Albums from "./components/Albums.jsx";
 import Photos from './components/Photos';
-import SpecificPost from "./components/SpecificPost";
+import SpecificPost from "./components/SpecificPost.jsx";
 import Comments from "./components/Comments";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ErrorPage from "./components/ErrorPage";
@@ -21,22 +21,18 @@ function App() {
     <UserProvider>
       <Router>
         <Routes>
-          {/* Redirect root path based on user's login status */}
           <Route
             path="/"
             element={<Navigate to={currentUser ? `/users/${currentUser.id}/home` : "/users/home"} />}
           />
-          {/* Authentication routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/complete-profile" element={<CompleteProfile />} />
 
-          {/* Home route */}
           <Route path="/users/home" element={<Root />}>
             <Route index element={<Home />} />
           </Route>
 
-          {/* Protected user routes */}
           <Route path="/users/:id/*" element={<Root />}>
             <Route path="home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="todos" element={<ProtectedRoute><Todos /></ProtectedRoute>} />
@@ -49,7 +45,6 @@ function App() {
             <Route path="albums/:albumId/photos" element={<ProtectedRoute><Photos /></ProtectedRoute>} />
           </Route>
 
-          {/* Error page route */}
           <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </Router>

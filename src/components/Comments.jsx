@@ -1,17 +1,16 @@
 import { useOutletContext, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchResource, deleteResource, updateResource } from "./ServerRequests";
+import { fetchResource, deleteFromResource, updateResource } from "./ServerRequests";
 import { FaTimes, FaTrash, FaEdit } from "react-icons/fa";
 import { EditComment, AddNewComment } from "./CommentsActions"
-import { useUser } from "../contexts/useUser";
+import { useUser } from "../contexts/UseUser";
 export default function Comments() {
     const { id, postId, setShowComments } = useOutletContext();
     const navigate = useNavigate();
-    const { userData } = useUser(); 
+    const { userData } = useUser();
     const storedUser = userData || JSON.parse(localStorage.getItem("currentUser"));
-    
-    const email = storedUser?.email; 
-        const [comments, setComments] = useState([]);
+    const email = storedUser?.email;
+    const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null)
     const [isAddCommentOpen, setIsAddCommentOpen] = useState(false)
     useEffect(() => {
@@ -30,7 +29,7 @@ export default function Comments() {
 
     const handleTrashClick = async (id) => {
         try {
-            await deleteResource(id, "comments");
+            await deleteFromResource(id, "comments");
             setComments((prevComments) => prevComments.filter((comment) => comment.id !== id));
         } catch (error) {
             console.error("Error deleting comment:", error.message);

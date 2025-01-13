@@ -1,12 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
 import { FaTrash } from 'react-icons/fa';
 import PropTypes from 'prop-types';
-import { deleteResource, fetchResource } from "./ServerRequests"
+import { deleteFromResource, fetchResource } from "./ServerRequests"
 export function PostsList(props) {
     const { postsArray, filtered, userPosts, setUserPosts, selectedPost, setSelectedPost,allPostsVisible } = props;
     const handleTrashClick = async (id) => {
         try {
-            await deleteResource(id, "posts");
+            await deleteFromResource(id, "posts");
             setUserPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
 
         } catch (error) {
@@ -16,7 +16,7 @@ export function PostsList(props) {
             const commentsToDelete = await fetchResource(id, "comments","postId");
             if (commentsToDelete && commentsToDelete.length > 0) {
                 for (const comment of commentsToDelete) {
-                    await deleteResource(comment.id,"comments");
+                    await deleteFromResource(comment.id,"comments");
     
                 }
             } else {
