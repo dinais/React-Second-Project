@@ -8,7 +8,7 @@ import './style.css';
 
 export default function Root() {
   const navigate = useNavigate();
- const { userData,setUserData } = useUser();
+  const { userData, setUserData } = useUser();
   const [didGuestPress, setDidGuestPress] = useState(false)
   const [showProfileModal, setShowProfileModal] = useState(false);
 
@@ -49,9 +49,9 @@ export default function Root() {
   return (
     <div className="root-container">
       <nav className="navigation-bar">
-        
-      <MdPerson color="white" size={24} onClick={handlePersonClick} />
-      {showProfileModal && <Info setShowProfileModal={setShowProfileModal}/>}
+
+        <MdPerson color="white" size={24} onClick={handlePersonClick} />
+        {showProfileModal && <Info setShowProfileModal={setShowProfileModal} />}
         <h3 className="nav-link">
           {isUserLoggedIn
             ? <Link to={`/users/${id}/home`} className="nav-link">Welcome, {name}</Link>
