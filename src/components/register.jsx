@@ -49,7 +49,7 @@ export default function Register() {
             />
             <button className="submit-button" onClick={handleRegister}>Register</button>
             <p>
-                You do not have an account yet? <button className="link-button" onClick={() => navigate("/login")}>Register here!</button>
+                You have an account already? <button className="link-button" onClick={() => navigate("/login")}>Login here!</button>
             </p>
         </div>
     );

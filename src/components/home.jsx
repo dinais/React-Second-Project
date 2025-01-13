@@ -10,7 +10,7 @@ function Home() {
       Task Manager: Create, organize, and manage your to-do lists efficiently.<br></br>
       Posts: View, search, and interact with posts. Add comments or share your thoughts.<br></br>
       Albums: Browse albums, view photos, and manage your own photo collections.<br></br>
-      User Info: Access and update your personal details quickly. <br></br>
+      User Info: Access your personal details quickly. <br></br>
       Explore it yourself!
       Enjoy...   </div>
   );
